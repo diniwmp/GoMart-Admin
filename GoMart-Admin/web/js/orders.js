@@ -230,14 +230,14 @@ if (order.userId && currentOrderId) {
   }
 };
 
-// ── Save in-app notification to user inbox ───────────────
-// Path: users/{userId}/notifications
+// ── Save in-app notification ──────────────────────────────
 async function saveInAppNotification(userId, status, orderId) {
   const shortId = orderId.substring(0, 6).toUpperCase();
   const title   = getStatusTitle(status);
   const message = getStatusMessage(status, shortId);
 
   try {
+    // ✅ Save to notifications/{userId}/items
     await addDoc(
       collection(db, "notifications", userId, "items"),
       {
@@ -249,9 +249,9 @@ async function saveInAppNotification(userId, status, orderId) {
         timestamp: Timestamp.now()
       }
     );
-    console.log("In-app notification saved for user:", userId);
+    console.log("✅ Notification saved for:", userId);
   } catch (e) {
-    console.error("Failed to save in-app notification:", e);
+    console.error("Save failed:", e);
   }
 }
 
