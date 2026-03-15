@@ -94,6 +94,8 @@
   <a href="orders.jsp">&#8801; Orders</a>
   <a href="inventory.jsp">&#9638; Inventory</a>
   <a href="delivery.jsp">&#9685; Delivery</a>
+    <a href="promotions.jsp">&#9993; Promotions</a>
+  <a href="messages.jsp">&#9993;Messages </a>
 
   <div class="nav-section">System</div>
   <a href="customers.jsp">&#9689; Customers</a>

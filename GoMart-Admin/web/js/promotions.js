@@ -59,58 +59,58 @@ window.updatePreview = function () {
   }
 };
 
-// ── Send notification ────────────────────────────────────
-window.sendNotification = async function () {
-  const title = document.getElementById("notifTitle").value.trim();
+// ── Send notification 
+// window.sendNotification = async function () {
+  const title   = document.getElementById("notifTitle").value.trim();
   const message = document.getElementById("notifMessage").value.trim();
-  const btn = document.getElementById("sendBtn");
+  const btn     = document.getElementById("sendBtn");
 
-  if (!title) { showAlert("Please enter a notification title.", "error"); return; }
+  if (!title)   { showAlert("Please enter a title.", "error"); return; }
   if (!message) { showAlert("Please enter a message.", "error"); return; }
 
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = "Sending...";
 
   try {
-    // write to notifications collection
-    // matches Notification model exactly:
-    // notifId, title, message, type, orderId, isRead, timestamp
-    const docRef = await addDoc(collection(db, "notifications"), {
-      title: title,
-      message: message,
-      type: selectedType,       // PROMO, SALE, SYSTEM
-      orderId: "",              // empty for promo — not order related
-      isRead: false,            // mobile app marks as read
-      timestamp: Timestamp.now()
+    // ✅ Get all users
+    const usersSnap = await getDocs(collection(db, "users"));
+
+    // ✅ Save to each user's inbox
+    const batch = [];
+    usersSnap.forEach(userDoc => {
+      batch.push(
+        addDoc(
+          collection(db, "notifications", userDoc.id, "items"),
+          {
+            title:     title,
+            message:   message,
+            type:      selectedType,
+            orderId:   "",
+            isRead:    false,
+            timestamp: Timestamp.now()
+          }
+        )
+      );
     });
 
-    // store notifId same as document id
-    await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")
-      .then(({ updateDoc, doc: firestoreDoc }) => {
-        return updateDoc(firestoreDoc(db, "notifications", docRef.id), {
-          notifId: docRef.id
-        });
-      });
+    await Promise.all(batch);
 
-    showAlert(`Notification sent to all customers successfully!`);
+    showAlert(`Notification sent to ${usersSnap.size} customers!`);
 
-    // reset form
-    document.getElementById("notifTitle").value = "";
+    document.getElementById("notifTitle").value   = "";
     document.getElementById("notifMessage").value = "";
     document.getElementById("promoPreview").style.display = "none";
 
-    loadNotifications();
-
   } catch (e) {
-    console.error("Send notification error:", e);
-    showAlert("Failed to send notification. Try again.", "error");
+    console.error("Send error:", e);
+    showAlert("Failed to send. Try again.", "error");
   } finally {
-    btn.disabled = false;
+    btn.disabled    = false;
     btn.textContent = "✉ Send to All Customers";
   }
 };
 
-// ── Load notifications ───────────────────────────────────
+// ── Load notifications 
 async function loadNotifications() {
   const table = document.getElementById("notifTable");
   table.innerHTML = `<tr><td colspan="5" class="loading">Loading notifications...</td></tr>`;

@@ -4,10 +4,8 @@
  */
 package resource;
 
-/**
- *
- * @author Dini
- */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class NotificationRequest {
     
     private String token;
