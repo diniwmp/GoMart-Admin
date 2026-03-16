@@ -9,7 +9,7 @@ const storage = getStorage(app);
 
 let allProducts = [];
 
-// ── Auth check ───────────────────────────────────────────
+//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -20,14 +20,14 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// ── Logout ───────────────────────────────────────────────
+//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-// ── Show alert ───────────────────────────────────────────
+//  Show alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -36,7 +36,7 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-// ── Image preview ─────────────────────────────────────────
+// Image preview 
 window.previewImage = function (input, previewId) {
   const img = document.getElementById(previewId);
   const labelId = previewId.replace("preview", "previewLabel");
@@ -52,7 +52,7 @@ window.previewImage = function (input, previewId) {
   }
 };
 
-// ── Compress image ────────────────────────────────────────
+//  Compress image 
 function compressImage(file, maxWidth = 600, quality = 0.75) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -72,7 +72,7 @@ function compressImage(file, maxWidth = 600, quality = 0.75) {
   });
 }
 
-// ── Upload single image ───────────────────────────────────
+//  Upload single image 
 function uploadImage(file, path, progressWrapId, progressBarId, progressLabelId) {
   return new Promise((resolve, reject) => {
     const storageRef = ref(storage, path);
@@ -98,7 +98,7 @@ function uploadImage(file, path, progressWrapId, progressBarId, progressLabelId)
   });
 }
 
-// ── Load categories and brands into dropdowns ─────────────
+//  Load categories and brands into dropdowns 
 async function loadDropdowns() {
   try {
     const [catSnap, brandSnap] = await Promise.all([
@@ -129,7 +129,7 @@ async function loadDropdowns() {
   }
 }
 
-// ── Add Product ───────────────────────────────────────────
+//  Add Product 
 window.addProduct = async function () {
   const title = document.getElementById("productTitle").value.trim();
   const price = parseFloat(document.getElementById("productPrice").value);
@@ -225,7 +225,7 @@ window.addProduct = async function () {
   }
 };
 
-// ── Load Products ─────────────────────────────────────────
+//  Load Products 
 async function loadProducts() {
   const table = document.getElementById("productsTable");
   table.innerHTML = `<tr><td colspan="6" class="loading">Loading products...</td></tr>`;
@@ -247,7 +247,7 @@ async function loadProducts() {
   }
 }
 
-// ── Render table ──────────────────────────────────────────
+//  Render table 
 function renderTable(products) {
   const table = document.getElementById("productsTable");
 
@@ -285,7 +285,7 @@ function renderTable(products) {
   });
 }
 
-// ── Search products ───────────────────────────────────────
+//  Search products 
 window.searchProducts = function () {
   const q = document.getElementById("searchInput").value.toLowerCase();
   const filtered = allProducts.filter(p =>
@@ -294,7 +294,7 @@ window.searchProducts = function () {
   renderTable(filtered);
 };
 
-// ── Delete product ────────────────────────────────────────
+//  Delete product 
 window.deleteProduct = async function (id) {
   if (!confirm("Are you sure you want to delete this product?")) return;
   try {
@@ -309,7 +309,7 @@ window.deleteProduct = async function (id) {
   }
 };
 
-// ── Open edit modal ───────────────────────────────────────
+//  Open edit modal 
 window.openEditModal = function (id) {
   const p = allProducts.find(p => p.id === id);
   if (!p) return;
@@ -340,7 +340,7 @@ window.closeEditModal = function () {
   document.getElementById("editModal").classList.remove("show");
 };
 
-// ── Save edit ─────────────────────────────────────────────
+//  Save edit 
 window.saveEdit = async function () {
   const id = document.getElementById("editProductId").value;
   const btn = document.getElementById("editSaveBtn");

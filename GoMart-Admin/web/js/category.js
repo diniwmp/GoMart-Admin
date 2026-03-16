@@ -7,7 +7,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ── Auth check ───────────────────────────────────────────
+//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -17,14 +17,14 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// ── Logout ───────────────────────────────────────────────
+//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-// ── Show alert ───────────────────────────────────────────
+//  Show alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -33,7 +33,7 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-// ── Compress image ───────────────────────────────────────
+//  Compress image 
 function compressImage(file, maxWidth = 300, quality = 0.7) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -53,7 +53,7 @@ function compressImage(file, maxWidth = 300, quality = 0.7) {
   });
 }
 
-// ── Upload image ─────────────────────────────────────────
+//  Upload image 
 function uploadImage(file, folder) {
   return new Promise((resolve, reject) => {
     const filePath = `${folder}/${Date.now()}_image.webp`;
@@ -84,7 +84,7 @@ function uploadImage(file, folder) {
   });
 }
 
-// ── Add Category ─────────────────────────────────────────
+//  Add Category 
 window.addCategory = async function () {
   const name = document.getElementById("categoryName").value.trim();
   const file = document.getElementById("categoryImage").files[0];
@@ -125,7 +125,7 @@ window.addCategory = async function () {
   }
 };
 
-// ── Load Categories ──────────────────────────────────────
+//  Load Categories 
 async function loadCategories() {
   const table = document.getElementById("categoryTable");
   table.innerHTML = `<tr><td colspan="4" class="loading">Loading categories...</td></tr>`;
@@ -169,7 +169,7 @@ async function loadCategories() {
   }
 }
 
-// ── Delete Category ──────────────────────────────────────
+//  Delete Category 
 window.deleteCategory = async function (id) {
   if (!confirm("Are you sure you want to delete this category?")) return;
   try {
@@ -182,7 +182,7 @@ window.deleteCategory = async function (id) {
   }
 };
 
-// ── Edit Modal ───────────────────────────────────────────
+//  Edit Modal 
 window.openEditModal = function (id, name, image) {
   document.getElementById("editCategoryId").value = id;
   document.getElementById("editCategoryName").value = name;
