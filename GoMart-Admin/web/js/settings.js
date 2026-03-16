@@ -9,7 +9,7 @@ const storage = getStorage(app);
 
 let currentUser = null;
 
-// ── Auth check ───────────────────────────────────────────
+//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -20,14 +20,14 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// ── Logout ───────────────────────────────────────────────
+//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-// ── Show alert ───────────────────────────────────────────
+//  Show alert 
 function showAlert(alertId, message, type = "success") {
   const el = document.getElementById(alertId);
   el.textContent = message;
@@ -36,7 +36,7 @@ function showAlert(alertId, message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-// ── Load admin profile ───────────────────────────────────
+//  Load admin profile 
 function loadAdminProfile(user) {
   document.getElementById("adminEmail").textContent = user.email;
   document.getElementById("adminEmailField").value = user.email;
@@ -59,7 +59,7 @@ function loadAdminProfile(user) {
   }
 }
 
-// ── Handle profile picture change ────────────────────────
+//  Handle profile picture change 
 window.handlePicChange = function (input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
@@ -75,7 +75,7 @@ window.handlePicChange = function (input) {
   reader.readAsDataURL(file);
 };
 
-// ── Save admin profile ───────────────────────────────────
+//  Save admin profile 
 window.saveProfile = async function () {
   const name = document.getElementById("adminName").value.trim();
   const file = document.getElementById("picInput").files[0];
@@ -120,7 +120,7 @@ window.saveProfile = async function () {
   }
 };
 
-// ── Upload profile picture ───────────────────────────────
+//  Upload profile picture 
 function uploadProfilePic(file) {
   return new Promise((resolve, reject) => {
     const filePath = `adminProfiles/${currentUser.uid}_profile.webp`;
@@ -164,7 +164,7 @@ function uploadProfilePic(file) {
   });
 }
 
-// ── Password strength checker ─────────────────────────────
+//  Password strength checker 
 window.checkStrength = function (password) {
   const segs = ["seg1", "seg2", "seg3", "seg4"];
   const label = document.getElementById("strengthLabel");
@@ -186,7 +186,7 @@ window.checkStrength = function (password) {
   label.style.color = strength > 0 ? colors[strength - 1] : "#94a3b8";
 };
 
-// ── Change password ───────────────────────────────────────
+//  Change password 
 window.changePassword = async function () {
   const current = document.getElementById("currentPassword").value;
   const newPass = document.getElementById("newPassword").value;
@@ -232,7 +232,7 @@ window.changePassword = async function () {
   }
 };
 
-// ── Load store info ───────────────────────────────────────
+//  Load store info 
 async function loadStoreInfo() {
   try {
     const snap = await getDoc(doc(db, "settings", "storeInfo"));
@@ -248,7 +248,7 @@ async function loadStoreInfo() {
   }
 }
 
-// ── Save store info ───────────────────────────────────────
+//  Save store info 
 window.saveStoreInfo = async function () {
   const storeName = document.getElementById("storeName").value.trim();
   const storePhone = document.getElementById("storePhone").value.trim();

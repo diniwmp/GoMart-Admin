@@ -17,12 +17,12 @@ const db   = getFirestore(app);
 const ADMIN_ID   = "ADMIN";
 const ADMIN_NAME = "GoMart Support";
 
-// ── State ─────────────────────────────────────────────────────────────────
+//  State 
 let allUsers       = [];
 let selectedUserId = null;
 let messagesUnsub  = null;
 
-// ── Auth guard ────────────────────────────────────────────────────────────
+//  Auth guard 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -38,12 +38,11 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   window.location.href = "index.html";
 });
 
-// ── Load all conversations ────────────────────────────────────────────────
+//  Load all conversations 
 function loadUserConversations() {
   const body = document.getElementById("userListBody");
   body.innerHTML = `<div class="user-list-empty">Loading...</div>`;
 
-  // FIX 1: added onError callback — previously silent failures showed nothing
   onSnapshot(
     collection(db, "chats"),
     (snapshot) => {
@@ -53,12 +52,9 @@ function loadUserConversations() {
         const data = d.data();
         allUsers.push({
           id:            d.id,
-          // FIX 2: handle both field names — Android fragment saves "userName"
-          //        but some docs may have "name"
           name:          data.userName      || data.name  || "Unknown",
           email:         data.userEmail     || data.email || "",
           lastMessage:   data.lastMessage   || "",
-          // FIX 3: handle both timestamp field names used across fragments
           lastTimestamp: data.lastTimestamp || data.lastMessageTime || null,
         });
       });
@@ -73,7 +69,6 @@ function loadUserConversations() {
       renderUserList(allUsers);
     },
     (error) => {
-      // FIX 4: show error so you can diagnose Firestore rules issues
       console.error("Firestore chats error:", error);
       body.innerHTML = `
         <div class="user-list-empty" style="color:#ef4444">
@@ -83,7 +78,7 @@ function loadUserConversations() {
   );
 }
 
-// ── Render user list ──────────────────────────────────────────────────────
+//  Render user list 
 function renderUserList(users) {
   const body = document.getElementById("userListBody");
 
@@ -98,7 +93,6 @@ function renderUserList(users) {
     const time     = u.lastTimestamp ? formatTime(u.lastTimestamp) : "";
     const isActive = u.id === selectedUserId;
 
-    // FIX 5: pass `this` to selectUser so active highlight works correctly
     return `
       <div class="user-item ${isActive ? "active" : ""}"
            onclick="selectUser('${u.id}', this)">
@@ -112,7 +106,7 @@ function renderUserList(users) {
   }).join("");
 }
 
-// ── Search filter ─────────────────────────────────────────────────────────
+//  Search filter 
 window.filterUsers = function () {
   const q = document.getElementById("userSearch").value.toLowerCase();
   const filtered = allUsers.filter(u =>
@@ -121,8 +115,7 @@ window.filterUsers = function () {
   renderUserList(filtered);
 };
 
-// ── Select user → open chat ───────────────────────────────────────────────
-// FIX 5: accept `el` param instead of broken `event.currentTarget`
+//  Select user → open chat 
 window.selectUser = function (userId, el) {
   selectedUserId = userId;
 
@@ -159,8 +152,6 @@ window.selectUser = function (userId, el) {
   document.getElementById("chatMessages").innerHTML =
     `<div class="loading-msg">Loading messages...</div>`;
 
-  // FIX 6: removed orderBy("timestamp") from the query — it requires a
-  // Firestore composite index AND crashes when serverTimestamp() is still
   // pending (null) on a freshly written doc. Sort client-side instead.
   messagesUnsub = onSnapshot(
     collection(db, "chats", userId, "messages"),
@@ -200,7 +191,6 @@ function renderMessages(docs) {
   container.innerHTML = docs.map((d) => {
     const msg = d.data();
 
-    // FIX 7: welcome message from Android uses senderId "admin" (lowercase)
     // so check both cases
     const isAdmin = msg.isAdmin === true
                  || msg.senderId === ADMIN_ID        // "ADMIN"
@@ -231,7 +221,7 @@ function renderMessages(docs) {
   container.scrollTop = container.scrollHeight;
 }
 
-// ── Send admin reply ──────────────────────────────────────────────────────
+//  Send admin reply 
 window.sendAdminMessage = async function () {
   if (!selectedUserId) return;
 
@@ -246,7 +236,6 @@ window.sendAdminMessage = async function () {
   try {
     const now = serverTimestamp();
 
-    // 1. Save admin message to subcollection
     await addDoc(
       collection(db, "chats", selectedUserId, "messages"),
       {
@@ -258,7 +247,6 @@ window.sendAdminMessage = async function () {
       }
     );
 
-    // 2. FIX 8: use setDoc with merge:true instead of updateDoc —
     //    updateDoc fails if the chat doc doesn't have the field yet
     await setDoc(
       doc(db, "chats", selectedUserId),
@@ -279,7 +267,7 @@ window.sendAdminMessage = async function () {
   }
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────
+//  Helpers 
 function formatTime(ts) {
   if (!ts) return "";
   const date = ts.toDate ? ts.toDate() : new Date((ts.seconds || 0) * 1000);

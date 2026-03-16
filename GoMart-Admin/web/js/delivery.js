@@ -9,7 +9,7 @@ const db   = getFirestore(app);
 
 let allOrders = [];
 
-// ── Auth check ───────────────────────────────────────────
+//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -19,7 +19,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// ── Logout ───────────────────────────────────────────────
+//  Logout 
 document.getElementById("logoutBtn")
   .addEventListener("click", async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ document.getElementById("logoutBtn")
     window.location.href = "index.html";
   });
 
-// ── Load deliveries ──────────────────────────────────────
+//  Load deliveries 
 async function loadDeliveries() {
   const table = document.getElementById("deliveryTable");
   table.innerHTML = `<tr><td colspan="5" class="loading">
@@ -54,7 +54,7 @@ async function loadDeliveries() {
   }
 }
 
-// ── Update stats ─────────────────────────────────────────
+//  Update stats 
 function updateStats() {
   document.getElementById("totalDeliveries").textContent =
           allOrders.length;
@@ -69,7 +69,7 @@ function updateStats() {
                   o.status === "delivered").length;
 }
 
-// ── Render table ─────────────────────────────────────────
+//  Render table 
 function renderTable(orders) {
   const table = document.getElementById("deliveryTable");
 
@@ -114,7 +114,7 @@ function renderTable(orders) {
   });
 }
 
-// ── Status class ─────────────────────────────────────────
+//  Status class 
 function getStatusClass(status) {
   return {
     pending:    "s-pending",
@@ -124,7 +124,7 @@ function getStatusClass(status) {
   }[status] || "s-pending";
 }
 
-// ── Format status label ──────────────────────────────────
+//  Format status label 
 function formatStatus(status) {
   return {
     pending:    "Pending",
@@ -134,7 +134,7 @@ function formatStatus(status) {
   }[status] || status;
 }
 
-// ── Filter ───────────────────────────────────────────────
+//  Filter 
 window.filterDeliveries = function (status, btn) {
   document.querySelectorAll(".filter-btn")
           .forEach(b => b.classList.remove("active"));
@@ -147,7 +147,7 @@ window.filterDeliveries = function (status, btn) {
   renderTable(filtered);
 };
 
-// ── Search ───────────────────────────────────────────────
+// Search 
 window.searchDeliveries = function () {
   const q = document.getElementById("searchInput")
                     .value.toLowerCase();
@@ -158,7 +158,7 @@ window.searchDeliveries = function () {
   renderTable(filtered);
 };
 
-// ── Open delivery detail modal ───────────────────────────
+// Open delivery detail modal 
 window.openDeliveryModal = function (id) {
   const order = allOrders.find(o => o.id === id);
   if (!order) return;
@@ -184,14 +184,14 @@ window.openDeliveryModal = function (id) {
   document.getElementById("modalAddressName").textContent =
           order.shippingAddress?.addressName || "—";
 
-  // ✅ Current status badge
+  // Current status badge
   const statusClass = getStatusClass(order.status);
   document.getElementById("modalStatus").innerHTML =
           `<span class="status-pill ${statusClass}">
             ${formatStatus(order.status || "pending")}
           </span>`;
 
-  // ✅ Delivery timeline — 4 steps only
+  // Delivery timeline — 4 steps only
   const STEPS = [
     { key: "pending",    label: "Order Placed"  },
     { key: "processing", label: "Processing"    },
@@ -216,8 +216,8 @@ window.openDeliveryModal = function (id) {
         <div class="timeline-label">${step.label}</div>
         <div class="timeline-time">
           ${index <= currentIndex
-                  ? "✅ Completed"
-                  : "⏳ Pending"}
+                  ? "Completed"
+                  : "Pending"}
         </div>
       </div>`;
   });

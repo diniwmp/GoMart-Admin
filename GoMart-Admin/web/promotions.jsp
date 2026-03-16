@@ -3,9 +3,10 @@
 <html>
     <head>
         <title>GoMart Admin - Promotions</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+                <link rel="icon" type="image/png" href="images/logo.png" />
 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <style>
             * {
                 box-sizing: border-box;
@@ -201,7 +202,7 @@
                 padding: 14px;
                 display: flex;
                 gap: 12px;
-                align-items: flex-start; 
+                align-items: flex-start;
             }
             .notif-icon {
                 width: 36px;
@@ -374,21 +375,27 @@
                 </div>
             </div>
             <div class="nav-section">Main</div>
-            <a href="dashboard.jsp">&#9632; Dashboard</a>
+            <a href="dashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+
             <div class="nav-section">Catalog</div>
-            <a href="products.jsp">&#9635; Products</a>
-            <a href="categories.jsp">&#9671; Categories</a>
-            <a href="brand.jsp">&#9674; Brands</a>
+            <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
+            <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
+            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
+
             <div class="nav-section">Operations</div>
-            <a href="orders.jsp">&#8801; Orders</a>
-            <a href="inventory.jsp">&#9638; Inventory</a>
-            <a href="delivery.jsp">&#9685; Delivery</a>
+            <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
+            <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
+            <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
+
             <div class="nav-section">System</div>
-            <a href="customers.jsp">&#9689; Customers</a>
-            <a href="promotions.jsp" class="active">&#9993; Promotions</a>
-            <a href="settings.jsp">&#9881; Settings</a>
+            <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
+            <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
+
+            <!--  <a href="settings.jsp">&#9881; Settings</a>-->
+
             <div class="sidebar-bottom">
-                <a href="index.html" id="logoutBtn">&#8594; Logout</a>
+                <a href="index.html" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
             </div>
         </div>
 
