@@ -205,12 +205,10 @@
     </div>
 </div>
 
-<!-- Customer Detail Modal -->
 <div class="modal-overlay" id="customerModal">
     <div class="modal-box">
         <div class="modal-title">Customer Details</div>
 
-        <!-- Info -->
         <div class="detail-section-title">Account Info</div>
         <div class="detail-row"><span class="detail-label">Name</span><span class="detail-value" id="modalName">—</span></div>
         <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value" id="modalEmail">—</span></div>

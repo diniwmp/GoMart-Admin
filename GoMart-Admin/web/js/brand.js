@@ -7,7 +7,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -17,14 +16,12 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-//  Show alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -33,7 +30,6 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-//  Compress image 
 function compressImage(file, maxWidth = 300, quality = 0.7) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -53,7 +49,6 @@ function compressImage(file, maxWidth = 300, quality = 0.7) {
   });
 }
 
-//  Upload image 
 function uploadImage(file, folder) {
   return new Promise((resolve, reject) => {
     const filePath = `${folder}/${Date.now()}_image.webp`;
@@ -84,7 +79,6 @@ function uploadImage(file, folder) {
   });
 }
 
-//  Add Brand 
 window.addBrand = async function () {
   const name = document.getElementById("brandName").value.trim();
   const file = document.getElementById("brandImage").files[0];
@@ -97,7 +91,6 @@ window.addBrand = async function () {
   btn.textContent = "Adding...";
 
   try {
-    // compress first then upload
     const compressed = await compressImage(file);
     const imageUrl = await uploadImage(compressed, "brandImages");
 
@@ -124,7 +117,6 @@ window.addBrand = async function () {
   }
 };
 
-//  Load Brands 
 async function loadBrands() {
   const table = document.getElementById("brandTable");
   table.innerHTML = `<tr><td colspan="4" class="loading">Loading brands...</td></tr>`;
@@ -168,7 +160,6 @@ async function loadBrands() {
   }
 }
 
-//  Delete Brand 
 window.deleteBrand = async function (id) {
   if (!confirm("Are you sure you want to delete this brand?")) return;
   try {
@@ -181,7 +172,6 @@ window.deleteBrand = async function (id) {
   }
 };
 
-//  Edit Modal 
 window.openEditModal = function (id, name, image) {
   document.getElementById("editBrandId").value = id;
   document.getElementById("editBrandName").value = name;
@@ -204,7 +194,6 @@ window.saveEdit = async function () {
     const updateData = { brandName: newName };
 
     if (file) {
-      // compress first then upload
       const compressed = await compressImage(file);
       updateData.imageUrl = await uploadImage(compressed, "brandImages");
     }

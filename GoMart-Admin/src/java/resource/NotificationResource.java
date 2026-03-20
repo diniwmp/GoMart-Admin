@@ -34,7 +34,6 @@ public class NotificationResource {
     private static final String FCM_SCOPE =
             "https://www.googleapis.com/auth/firebase.messaging";
 
-    // ── Health check ──────────────────────────────────────────────
     @GET
     @Path("/health")
     @Produces(MediaType.APPLICATION_JSON)
@@ -45,7 +44,7 @@ public class NotificationResource {
                 .build();
     }
 
-    // ── Send notification ─────────────────────────────────────────
+    //  Send notification 
     @POST
     @Path("/send")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -71,7 +70,7 @@ public class NotificationResource {
                     req.getType());
 
             if (code == 200) {
-                LOG.info("✅ FCM sent successfully");
+                LOG.info("FCM sent successfully");
                 return Response.ok(
                         "{\"success\":true}").build();
             } else {
@@ -98,7 +97,7 @@ public class NotificationResource {
         }
     }
 
-    // ── Send FCM via HTTP v1 API ──────────────────────────────────
+    // Send FCM via HTTP v1 API 
     private int sendFcmMessage(String token,
                                 String title,
                                 String message,
@@ -148,7 +147,7 @@ public class NotificationResource {
         return responseCode;
     }
 
-    // ── Build FCM JSON ────────────────────────────────────────────
+    //  Build FCM JSON 
     private String buildFcmJson(String token,
                                  String title,
                                  String message,
@@ -187,7 +186,7 @@ public class NotificationResource {
                 + "}";
     }
 
-    // ── Get OAuth2 token ─────────────────────────────────────────
+    //  Get OAuth2 token 
     private String getAccessToken() throws Exception {
 
         InputStream serviceAccount =
@@ -206,7 +205,6 @@ public class NotificationResource {
             throw new Exception("FCM_SKIP");
         }
 
-        // ✅ Java 8 compatible
         String json = readStream(serviceAccount);
 
         String privateKeyStr =
@@ -223,12 +221,12 @@ public class NotificationResource {
         return exchangeJwtForToken(jwt);
     }
 
-    // ── Build JWT ─────────────────────────────────────────────────
+    //  Build JWT 
     private String buildJwt(String privateKeyPem,
                               String clientEmail)
             throws Exception {
 
-        // ✅ Clean PEM key
+        // Clean PEM key
         String cleanKey = privateKeyPem
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -237,7 +235,7 @@ public class NotificationResource {
                 .replaceAll("\r", "")
                 .trim();
 
-        // ✅ Decode using Java 8 Base64
+        //  Decode using Java 8 Base64
         byte[] keyBytes = java.util.Base64.getDecoder()
                 .decode(cleanKey);
 
@@ -278,7 +276,7 @@ public class NotificationResource {
                 + base64UrlEncode(signature);
     }
 
-    // ── Exchange JWT for access token ─────────────────────────────
+    //  Exchange JWT for access token 
     private String exchangeJwtForToken(String jwt)
             throws Exception {
 
@@ -311,7 +309,6 @@ public class NotificationResource {
                 ? conn.getInputStream()
                 : conn.getErrorStream();
 
-        // ✅ Java 8 compatible readStream
         String response = readStream(is);
         LOG.info("Token response code: " + code);
 
@@ -326,11 +323,10 @@ public class NotificationResource {
                     "No access_token in response");
         }
 
-        LOG.info("✅ OAuth2 token obtained");
+        LOG.info("OAuth2 token obtained");
         return token;
     }
 
-    // ── Java 8 stream reader ──────────────────────────────────────
     private String readStream(InputStream is) throws Exception {
         if (is == null) return "";
         BufferedReader br = new BufferedReader(
@@ -345,14 +341,12 @@ public class NotificationResource {
         return sb.toString();
     }
 
-    // ── Base64 URL encode ─────────────────────────────────────────
     private String base64UrlEncode(byte[] data) {
         return java.util.Base64.getUrlEncoder()
                 .withoutPadding()
                 .encodeToString(data);
     }
 
-    // ── Simple JSON value extractor ───────────────────────────────
     private String extractJson(String json, String key) {
         String search = "\"" + key + "\"";
         int idx = json.indexOf(search);
@@ -385,7 +379,6 @@ public class NotificationResource {
         return sb.toString();
     }
 
-    // ── Escape JSON ───────────────────────────────────────────────
     private String escapeJson(String text) {
         if (text == null) return "";
         return text

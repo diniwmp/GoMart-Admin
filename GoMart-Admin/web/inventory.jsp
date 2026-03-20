@@ -499,7 +499,6 @@
 
         </div>
 
-        <!-- Update Stock Modal -->
         <div class="modal-overlay" id="stockModal">
             <div class="modal-box">
                 <div class="modal-title" id="modalProductTitle">Update Stock</div>

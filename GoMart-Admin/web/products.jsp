@@ -519,11 +519,9 @@
                 </div>
             </div>
 
-            <!-- Add Product Form -->
             <div class="content-card">
                 <div class="card-title">Add New Product</div>
 
-                <!-- Basic Info -->
                 <div class="section-divider">Basic Information</div>
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -540,7 +538,6 @@
                     </div>
                 </div>
 
-                <!-- Category & Brand -->
                 <div class="section-divider">Category & Brand</div>
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -557,7 +554,6 @@
                     </div>
                 </div>
 
-                <!-- Stock & Status -->
                 <div class="section-divider">Stock & Status</div>
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -579,7 +575,6 @@
                     </div>
                 </div>
 
-                <!-- Images -->
                 <div class="section-divider">Product Images (2 images)</div>
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -617,7 +612,6 @@
                 </div>
             </div>
 
-            <!-- Products Table -->
             <div class="content-card">
                 <div class="card-title">All Products
                     <span id="productCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span>
@@ -645,7 +639,6 @@
 
         </div>
 
-        <!-- Edit Modal -->
         <div class="modal-overlay" id="editModal">
             <div class="modal-box">
                 <div class="modal-title">Edit Product</div>

@@ -373,10 +373,8 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
-            <!-- Topbar -->
             <div class="topbar">
                 <div>
                     <p class="page-title">Category Management</p>
@@ -388,7 +386,6 @@
                 </div>
             </div>
 
-            <!-- Add Category Form -->
             <div class="content-card">
                 <div class="card-title">Add New Category</div>
                 <div class="row g-3">
@@ -413,7 +410,6 @@
                 <div class="alert-msg" id="alertMsg"></div>
             </div>
 
-            <!-- Categories Table -->
             <div class="content-card">
                 <div class="card-title">
                     All Categories
@@ -436,7 +432,6 @@
 
         </div>
 
-        <!-- Edit Modal -->
         <div class="modal-overlay" id="editModal">
             <div class="modal-box">
                 <div class="modal-title">Edit Category</div>

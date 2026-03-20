@@ -7,7 +7,6 @@ const db = getFirestore(app);
 
 let allProducts = [];
 
-//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -17,14 +16,12 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-//  Show alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -33,14 +30,12 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-//  Stock status helper 
 function getStockStatus(qty) {
   if (qty <= 0) return { label: "Out of Stock", cls: "s-out-stock", type: "out" };
   if (qty < 10) return { label: "Low Stock", cls: "s-low-stock", type: "low" };
   return { label: "In Stock", cls: "s-in-stock", type: "in" };
 }
 
-//  Load Inventory 
 async function loadInventory() {
   const table = document.getElementById("inventoryTable");
   table.innerHTML = `<tr><td colspan="6" class="loading">Loading inventory...</td></tr>`;
@@ -64,7 +59,6 @@ async function loadInventory() {
   }
 }
 
-//  Update stat cards 
 function updateStats() {
   document.getElementById("totalProducts").textContent = allProducts.length;
   document.getElementById("inStockCount").textContent = allProducts.filter(p => p.stockCount >= 10).length;
@@ -72,7 +66,6 @@ function updateStats() {
   document.getElementById("outStockCount").textContent = allProducts.filter(p => !p.stockCount || p.stockCount <= 0).length;
 }
 
-//  Render table 
 function renderTable(products) {
   const table = document.getElementById("inventoryTable");
 
@@ -88,12 +81,10 @@ function renderTable(products) {
     const pct = Math.min(Math.round((qty / 150) * 100), 100);
     const barColor = qty <= 0 ? "#ef4444" : qty < 10 ? "#f59e0b" : "#22c55e";
 
-    // first image from images array — matches Product model
     const img = (p.images && p.images.length > 0)
       ? p.images[0]
       : "https://via.placeholder.com/44x44?text=No+Img";
 
-    // title, price, stockCount, productId match Product model
     table.innerHTML += `
       <tr>
         <td>
@@ -121,7 +112,6 @@ function renderTable(products) {
   });
 }
 
-//  Filter products 
 window.filterProducts = function (type, btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
@@ -133,7 +123,6 @@ window.filterProducts = function (type, btn) {
   renderTable(filtered);
 };
 
-//  Search products 
 window.searchProducts = function () {
   const q = document.getElementById("searchInput").value.toLowerCase();
   const filtered = allProducts.filter(p =>
@@ -142,7 +131,6 @@ window.searchProducts = function () {
   renderTable(filtered);
 };
 
-//  Open stock modal 
 window.openStockModal = function (id) {
   const product = allProducts.find(p => p.id === id);
   if (!product) return;
@@ -160,7 +148,6 @@ window.closeStockModal = function () {
   document.getElementById("stockModal").classList.remove("show");
 };
 
-//  Save stock update 
 window.saveStock = async function () {
   const id = document.getElementById("modalDocId").value;
   const newQty = parseInt(document.getElementById("newStock").value);
@@ -171,12 +158,10 @@ window.saveStock = async function () {
   }
 
   try {
-    // stockCount matches Product model
     await updateDoc(doc(db, "products", id), {
       stockCount: newQty
     });
 
-    // update local array
     const product = allProducts.find(p => p.id === id);
     if (product) product.stockCount = newQty;
 

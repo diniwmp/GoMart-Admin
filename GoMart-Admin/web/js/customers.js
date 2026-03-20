@@ -8,7 +8,6 @@ const db = getFirestore(app);
 let allCustomers = [];
 let allOrders = [];
 
-// Auth check
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         window.location.href = "index.html";
@@ -18,14 +17,12 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Logout
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
     await signOut(auth);
     window.location.href = "index.html";
 });
 
-// Load customers and orders
 async function loadCustomers() {
     const table = document.getElementById("customersTable");
     table.innerHTML = `<tr><td colspan="5" class="loading">Loading customers...</td></tr>`;
@@ -48,12 +45,10 @@ async function loadCustomers() {
     }
 }
 
-// Get order count for a user
 function getOrderCount(uid) {
     return allOrders.filter(o => o.userId === uid).length;
 }
 
-// Update stats
 function updateStats() {
     const total = allCustomers.length;
     const withOrders = allCustomers.filter(c => getOrderCount(c.id) > 0).length;
@@ -64,7 +59,6 @@ function updateStats() {
     document.getElementById("customerCount").textContent = `(${total})`;
 }
 
-// Render table
 function renderTable(customers) {
     const table = document.getElementById("customersTable");
     if (customers.length === 0) {
@@ -92,7 +86,6 @@ function renderTable(customers) {
     });
 }
 
-// Search
 window.searchCustomers = function () {
     const q = document.getElementById("searchInput").value.toLowerCase();
     const filtered = allCustomers.filter(c =>
@@ -103,7 +96,6 @@ window.searchCustomers = function () {
     renderTable(filtered);
 };
 
-// Customer modal
 window.openCustomerModal = function (uid) {
     const c = allCustomers.find(cust => cust.id === uid);
     if (!c) return;
@@ -121,7 +113,6 @@ window.openCustomerModal = function (uid) {
     } else {
         ordersDiv.innerHTML = "";
         orders.forEach(o => {
-            // Make sure to replace 'total' and 'date' with your actual Firestore fields
             const amount = o.total || o.totalAmount || o.grandTotal || 0;
             const dateStr = o.date || o.createdAt || "—"; 
             const formattedDate = typeof dateStr === "object" && dateStr.toDate ? dateStr.toDate().toLocaleDateString() : dateStr;

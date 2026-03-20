@@ -470,7 +470,6 @@
                     </div>
                 </div>
 
-                <!-- Live preview -->
                 <div class="promo-preview" id="promoPreview">
                     <div class="promo-preview-title">Preview — how it looks on mobile</div>
                     <div class="notif-card">
@@ -492,7 +491,6 @@
                 </div>
             </div>
 
-            <!-- Sent Notifications Table -->
             <div class="content-card">
                 <div class="card-title">Sent Notifications
                     <span id="notifCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span>

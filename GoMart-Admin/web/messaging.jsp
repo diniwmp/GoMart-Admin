@@ -533,8 +533,6 @@
             import { getFirestore, collection, doc, addDoc, onSnapshot, setDoc, serverTimestamp }
             from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-            // ── Firebase config — same as firebase-config.js ──────────────────────────
-            // Import from your existing config file
             import { app } from "./js/firebase-config.js";
 
             const auth = getAuth(app);
@@ -543,12 +541,10 @@
             const ADMIN_ID = "ADMIN";
             const ADMIN_NAME = "GoMart Support";
 
-            // ── State ──────────────────────────────────────────────────────────────────
             let allUsers = [];
             let selectedUserId = null;
             let messagesUnsub = null;
 
-            // ── DOM refs ───────────────────────────────────────────────────────────────
             const userListBody = document.getElementById("userListBody");
             const chatMessages = document.getElementById("chatMessages");
             const chatHeader = document.getElementById("chatHeader");
@@ -556,7 +552,6 @@
             const sendBtn = document.getElementById("sendBtn");
             const userSearch = document.getElementById("userSearch");
 
-            // ── Auth ───────────────────────────────────────────────────────────────────
             onAuthStateChanged(auth, (user) => {
                 if (!user) {
                     window.location.href = "index.html";
@@ -572,7 +567,6 @@
                 window.location.href = "index.html";
             });
 
-            // ── Load all chats ─────────────────────────────────────────────────────────
             function loadConversations() {
                 userListBody.innerHTML = `<div class="user-list-empty">Loading...</div>`;
 
@@ -608,7 +602,6 @@
                 );
             }
 
-            // ── Render user list ───────────────────────────────────────────────────────
             function renderUserList(users) {
                 if (users.length === 0) {
                     userListBody.innerHTML = `<div class="user-list-empty">No conversations yet</div>`;
@@ -636,7 +629,6 @@
                 });
             }
 
-            // ── Select user ────────────────────────────────────────────────────────────
             function selectUser(userId, el) {
                 selectedUserId = userId;
 
@@ -664,7 +656,6 @@
 
                 chatMessages.innerHTML = `<div class="loading-msg">Loading messages...</div>`;
 
-                // ── Real-time listener, client-side sort (no index needed) ─────────────
                 messagesUnsub = onSnapshot(
                         collection(db, "chats", userId, "messages"),
                         {includeMetadataChanges: false},
@@ -682,7 +673,6 @@
                 );
             }
 
-            // ── Render messages ────────────────────────────────────────────────────────
             function renderMessages(docs) {
                 if (docs.length === 0) {
                     chatMessages.innerHTML = `
@@ -721,7 +711,6 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            // ── Send admin reply ───────────────────────────────────────────────────────
             async function sendAdminMessage() {
                 if (!selectedUserId)
                     return;
@@ -762,7 +751,6 @@
                 }
             }
 
-            // ── Wire up send button and Enter key here (same scope) ───────────────────
             sendBtn.addEventListener("click", sendAdminMessage);
 
             chatInput.addEventListener("keydown", (e) => {
@@ -777,7 +765,6 @@
                 chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + "px";
             });
 
-            // ── Search ─────────────────────────────────────────────────────────────────
             userSearch.addEventListener("input", () => {
                 const q = userSearch.value.toLowerCase();
                 renderUserList(
@@ -787,7 +774,6 @@
                         );
             });
 
-            // ── Helpers ────────────────────────────────────────────────────────────────
             function getInitials(name) {
                 return (name || "?").split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
             }

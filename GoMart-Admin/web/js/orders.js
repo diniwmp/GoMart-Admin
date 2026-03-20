@@ -11,7 +11,6 @@ const db = getFirestore(app);
 let allOrders = [];
 let currentOrderId = null;
 
-//  Auth check 
 onAuthStateChanged(auth, (user) => {
 if (!user) {
     window.location.href = "index.html";
@@ -21,14 +20,12 @@ if (!user) {
 }
 });
 
-//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
 e.preventDefault();
 await signOut(auth);
 window.location.href = "index.html";
 });
 
-//  Load Orders 
 async function loadOrders() {
 const table = document.getElementById("ordersTable");
 table.innerHTML = `<tr><td colspan="6" class="loading">Loading orders...</td></tr>`;
@@ -52,7 +49,6 @@ try {
     }
 }
 
-//  Update stat cards 
 function updateStats() {
     document.getElementById("totalOrders").textContent = allOrders.length;
     document.getElementById("pendingOrders").textContent = allOrders.filter(o => o.status === "pending").length;
@@ -60,7 +56,6 @@ function updateStats() {
     document.getElementById("deliveredOrders").textContent = allOrders.filter(o => o.status === "delivered").length;
 }
 
-//  Render table 
 function renderTable(orders) {
     const table = document.getElementById("ordersTable");
 
@@ -106,7 +101,6 @@ function renderTable(orders) {
     });
 }
 
-// Filter orders 
 window.filterOrders = function (status, btn) {
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
@@ -118,7 +112,6 @@ window.filterOrders = function (status, btn) {
     renderTable(filtered);
 };
 
-//  Search orders 
 window.searchOrders = function () {
     const q = document.getElementById("searchInput").value.toLowerCase();
     const filtered = allOrders.filter(o => {
@@ -128,7 +121,6 @@ window.searchOrders = function () {
     renderTable(filtered);
 };
 
-//  Open order detail modal 
 window.openOrderModal = function (id) {
     const order = allOrders.find(o => o.id === id);
     if (!order)
@@ -181,7 +173,6 @@ window.closeOrderModal = function () {
     currentOrderId = null;
 };
 
-//  Update order status 
 window.updateOrderStatus = async function () {
     if (!currentOrderId)
         return;
@@ -198,11 +189,9 @@ window.updateOrderStatus = async function () {
     }
 
     try {
-//    Update order status in Firestore
         await updateDoc(doc(db, "orders", currentOrderId), {
             status: newStatus
         });
-// Save in-app notification + send FCM
         if (order.userId && currentOrderId) {
             await saveInAppNotification(
                     order.userId, newStatus, currentOrderId);
@@ -210,12 +199,10 @@ window.updateOrderStatus = async function () {
                     order.userId, newStatus, currentOrderId);
         }
 
-//    Update local array + re-render
         order.status = newStatus;
         updateStats();
         renderTable(allOrders);
 
-        // Green flash on select
         const select = document.getElementById("modalStatusSelect");
         select.style.borderColor = "#22c55e";
         setTimeout(() => {
@@ -235,14 +222,12 @@ window.updateOrderStatus = async function () {
     }
 };
 
-//  Save in-app notification 
 async function saveInAppNotification(userId, status, orderId) {
     const shortId = orderId.substring(0, 6).toUpperCase();
     const title = getStatusTitle(status);
     const message = getStatusMessage(status, shortId);
 
     try {
-        //  Save to notifications/{userId}/items
         await addDoc(
                 collection(db, "notifications", userId, "items"),
                 {
@@ -260,9 +245,7 @@ async function saveInAppNotification(userId, status, orderId) {
     }
 }
 
-//  Send FCM phone notification via backend 
 async function sendFcmNotification(userId, status, orderId) {
-    // Guard against null orderId
     if (!orderId) {
         console.warn("No orderId provided, skipping FCM");
         return;
@@ -303,12 +286,10 @@ async function sendFcmNotification(userId, status, orderId) {
         }
 
     } catch (e) {
-        // Don't block order update if FCM fails
         console.warn("FCM skipped:", e.message);
     }
 }
 
-//  Status title helper 
 function getStatusTitle(status) {
     const titles = {
         pending: "Order Received",
@@ -319,7 +300,6 @@ function getStatusTitle(status) {
     return titles[status] || "Order Update";
 }
 
-//  Status message helper 
 function getStatusMessage(status, shortId) {
     const messages = {
         pending: `Your order #${shortId} has been received and is awaiting processing.`,
@@ -330,9 +310,7 @@ function getStatusMessage(status, shortId) {
     return messages[status] || `Your order #${shortId} status has been updated to ${status}.`;
 }
 
-//  Toast helper 
 function showToast(message, type = "success") {
-    // Check if toast element exists — add one if not
     let toast = document.getElementById("adminToast");
     if (!toast) {
         toast = document.createElement("div");
