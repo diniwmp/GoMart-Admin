@@ -14,7 +14,6 @@ const BACKEND_URL =
 
 let selectedType = "PROMO";
 
-//  Auth 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -30,7 +29,6 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   window.location.href = "index.html";
 });
 
-//  Alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -39,7 +37,6 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-//  Type selector 
 window.selectType = function (card, type) {
   document.querySelectorAll(".type-card")
           .forEach(c => c.classList.remove("selected"));
@@ -50,7 +47,6 @@ window.selectType = function (card, type) {
       icons[type] ;
 };
 
-//  Live preview 
 window.updatePreview = function () {
   const title   = document.getElementById("notifTitle").value;
   const message = document.getElementById("notifMessage").value;
@@ -66,7 +62,6 @@ window.updatePreview = function () {
   }
 };
 
-//  Send notification to ALL users 
 window.sendNotification = async function () {
   const title   = document.getElementById("notifTitle").value.trim();
   const message = document.getElementById("notifMessage").value.trim();
@@ -85,7 +80,6 @@ window.sendNotification = async function () {
     let fcmCount   = 0;
     let fcmFailed  = 0;
 
-    // Process each user
     const tasks = [];
     usersSnap.forEach(userDoc => {
       tasks.push(
@@ -121,12 +115,10 @@ window.sendNotification = async function () {
   }
 };
 
-// Process one user: save in-app + send FCM 
 async function processUser(userDoc, title, message) {
   const uid    = userDoc.id;
   const result = { fcmSent: false };
 
-  // Save in-app notification to Firestore
   try {
     await addDoc(
       collection(db, "notifications", uid, "items"),
@@ -143,10 +135,9 @@ async function processUser(userDoc, title, message) {
     console.error("In-app save failed for " + uid + ":", e.message);
   }
 
-  // Send FCM push notification via Java EE backend
   try {
     const fcmToken = userDoc.data()?.fcmToken;
-    if (!fcmToken) return result; // no token — skip FCM
+    if (!fcmToken) return result; 
 
     const response = await fetch(BACKEND_URL, {
       method:  "POST",
@@ -167,14 +158,12 @@ async function processUser(userDoc, title, message) {
       console.warn("FCM failed for " + uid + ":", response.status);
     }
   } catch (e) {
-    // Don't block on FCM failure — in-app notification already saved
     console.warn("FCM skipped for " + uid + ":", e.message);
   }
 
   return result;
 }
 
-// Load sent notifications table 
 async function loadNotifications() {
   const table = document.getElementById("notifTable");
   table.innerHTML =
@@ -242,7 +231,6 @@ async function loadNotifications() {
   }
 }
 
-//  Delete notification 
 window.deleteNotification = async function (id) {
   if (!confirm("Delete this notification?")) return;
   try {

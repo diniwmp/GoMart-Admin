@@ -1,7 +1,4 @@
-// js/messaging.js
-// Firestore structure:
-//   chats/{userId}                        ← metadata doc
-//   chats/{userId}/messages/{messageId}   ← individual messages
+
 
 import { app } from "./firebase-config.js";
 import { getAuth, onAuthStateChanged, signOut }
@@ -17,12 +14,10 @@ const db   = getFirestore(app);
 const ADMIN_ID   = "ADMIN";
 const ADMIN_NAME = "GoMart Support";
 
-//  State 
 let allUsers       = [];
 let selectedUserId = null;
 let messagesUnsub  = null;
 
-//  Auth guard 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -38,7 +33,6 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   window.location.href = "index.html";
 });
 
-//  Load all conversations 
 function loadUserConversations() {
   const body = document.getElementById("userListBody");
   body.innerHTML = `<div class="user-list-empty">Loading...</div>`;
@@ -59,7 +53,6 @@ function loadUserConversations() {
         });
       });
 
-      // Sort newest conversation first
       allUsers.sort((a, b) => {
         const ta = a.lastTimestamp?.seconds || 0;
         const tb = b.lastTimestamp?.seconds || 0;
@@ -78,7 +71,6 @@ function loadUserConversations() {
   );
 }
 
-//  Render user list 
 function renderUserList(users) {
   const body = document.getElementById("userListBody");
 
@@ -106,7 +98,6 @@ function renderUserList(users) {
   }).join("");
 }
 
-//  Search filter 
 window.filterUsers = function () {
   const q = document.getElementById("userSearch").value.toLowerCase();
   const filtered = allUsers.filter(u =>
@@ -115,11 +106,9 @@ window.filterUsers = function () {
   renderUserList(filtered);
 };
 
-//  Select user → open chat 
 window.selectUser = function (userId, el) {
   selectedUserId = userId;
 
-  // Update active highlight in sidebar
   document.querySelectorAll(".user-item")
           .forEach(item => item.classList.remove("active"));
   if (el) el.classList.add("active");
@@ -127,7 +116,6 @@ window.selectUser = function (userId, el) {
   const user = allUsers.find(u => u.id === userId);
   if (!user) return;
 
-  // Populate chat header
   const initials = (user.name || "?")
     .split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
   document.getElementById("chatHeader").style.display     = "flex";
@@ -135,7 +123,6 @@ window.selectUser = function (userId, el) {
   document.getElementById("chatHeaderName").textContent   = user.name;
   document.getElementById("chatHeaderEmail").textContent  = user.email;
 
-  // Enable reply input
   const input   = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
   input.disabled    = false;
@@ -143,7 +130,6 @@ window.selectUser = function (userId, el) {
   input.placeholder = "Type a reply...";
   input.focus();
 
-  // Detach old messages listener
   if (messagesUnsub) {
     messagesUnsub();
     messagesUnsub = null;
@@ -152,12 +138,10 @@ window.selectUser = function (userId, el) {
   document.getElementById("chatMessages").innerHTML =
     `<div class="loading-msg">Loading messages...</div>`;
 
-  // pending (null) on a freshly written doc. Sort client-side instead.
   messagesUnsub = onSnapshot(
     collection(db, "chats", userId, "messages"),
     { includeMetadataChanges: false },
     (snapshot) => {
-      // Client-side sort ascending by timestamp
       const sorted = snapshot.docs.slice().sort((a, b) => {
         const ta = a.data().timestamp?.seconds || 0;
         const tb = b.data().timestamp?.seconds || 0;
@@ -175,7 +159,6 @@ window.selectUser = function (userId, el) {
   );
 };
 
-// ── Render messages ───────────────────────────────────────────────────────
 function renderMessages(docs) {
   const container = document.getElementById("chatMessages");
 
@@ -191,10 +174,9 @@ function renderMessages(docs) {
   container.innerHTML = docs.map((d) => {
     const msg = d.data();
 
-    // so check both cases
     const isAdmin = msg.isAdmin === true
-                 || msg.senderId === ADMIN_ID        // "ADMIN"
-                 || msg.senderId === "admin";        // legacy lowercase
+                 || msg.senderId === ADMIN_ID        
+                 || msg.senderId === "admin";       
 
     const time     = msg.timestamp ? formatTime(msg.timestamp) : "";
     const initials = isAdmin
@@ -217,11 +199,9 @@ function renderMessages(docs) {
       </div>`;
   }).join("");
 
-  // Scroll to latest
   container.scrollTop = container.scrollHeight;
 }
 
-//  Send admin reply 
 window.sendAdminMessage = async function () {
   if (!selectedUserId) return;
 
@@ -247,7 +227,6 @@ window.sendAdminMessage = async function () {
       }
     );
 
-    //    updateDoc fails if the chat doc doesn't have the field yet
     await setDoc(
       doc(db, "chats", selectedUserId),
       { lastMessage: text, lastTimestamp: now },
@@ -267,7 +246,6 @@ window.sendAdminMessage = async function () {
   }
 };
 
-//  Helpers 
 function formatTime(ts) {
   if (!ts) return "";
   const date = ts.toDate ? ts.toDate() : new Date((ts.seconds || 0) * 1000);

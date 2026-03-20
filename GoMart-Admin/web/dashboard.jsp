@@ -306,10 +306,8 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
-            <!-- Topbar -->
             <div class="topbar">
                 <div>
                     <p class="page-title">Dashboard</p>
@@ -321,7 +319,6 @@
                 </div>
             </div>
 
-            <!-- Stat Cards -->
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="stat-card">
@@ -370,7 +367,6 @@
                 </div>
             </div>
 
-            <!-- Bottom Grid -->
             <div class="row g-3">
                 <div class="col-md-7">
                     <div class="content-card">
@@ -409,7 +405,6 @@
 
         </div>
 
-        <!-- JS controller -->
         <script type="module" src="js/dashboard.js"></script>
     </body>
 </html>

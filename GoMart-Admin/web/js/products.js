@@ -9,7 +9,6 @@ const storage = getStorage(app);
 
 let allProducts = [];
 
-//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -20,14 +19,12 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-//  Show alert 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
   el.textContent = message;
@@ -36,7 +33,6 @@ function showAlert(message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-// Image preview 
 window.previewImage = function (input, previewId) {
   const img = document.getElementById(previewId);
   const labelId = previewId.replace("preview", "previewLabel");
@@ -52,7 +48,6 @@ window.previewImage = function (input, previewId) {
   }
 };
 
-//  Compress image 
 function compressImage(file, maxWidth = 600, quality = 0.75) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -72,7 +67,6 @@ function compressImage(file, maxWidth = 600, quality = 0.75) {
   });
 }
 
-//  Upload single image 
 function uploadImage(file, path, progressWrapId, progressBarId, progressLabelId) {
   return new Promise((resolve, reject) => {
     const storageRef = ref(storage, path);
@@ -98,7 +92,6 @@ function uploadImage(file, path, progressWrapId, progressBarId, progressLabelId)
   });
 }
 
-//  Load categories and brands into dropdowns 
 async function loadDropdowns() {
   try {
     const [catSnap, brandSnap] = await Promise.all([
@@ -106,7 +99,6 @@ async function loadDropdowns() {
       getDocs(collection(db, "brands"))
     ]);
 
-    // populate add form dropdowns
     const catSelect = document.getElementById("productCategory");
     const brandSelect = document.getElementById("productBrand");
     const editCatSelect = document.getElementById("editCategory");
@@ -129,7 +121,6 @@ async function loadDropdowns() {
   }
 }
 
-//  Add Product 
 window.addProduct = async function () {
   const title = document.getElementById("productTitle").value.trim();
   const price = parseFloat(document.getElementById("productPrice").value);
@@ -143,7 +134,6 @@ window.addProduct = async function () {
   const file2 = document.getElementById("productImage2").files[0];
   const btn = document.getElementById("addBtn");
 
-  // validation
   if (!title) { showAlert("Please enter product title.", "error"); return; }
   if (isNaN(price) || price < 0) { showAlert("Please enter valid price.", "error"); return; }
   if (!categoryId) { showAlert("Please select a category.", "error"); return; }
@@ -158,7 +148,6 @@ window.addProduct = async function () {
   try {
     const ts = Date.now();
 
-    // compress and upload both images
     const [comp1, comp2] = await Promise.all([
       compressImage(file1),
       compressImage(file2)
@@ -180,7 +169,6 @@ window.addProduct = async function () {
 
     document.getElementById("progressWrap").style.display = "none";
 
-    // images is array with imageUrl0 and imageUrl1 — matches Product model
     const docRef = await addDoc(collection(db, "products"), {
       title,
       description,
@@ -193,14 +181,12 @@ window.addProduct = async function () {
       images: [imageUrl0, imageUrl1]
     });
 
-    // set productId same as document id
     await updateDoc(doc(db, "products", docRef.id), {
       productId: docRef.id
     });
 
     showAlert("Product added successfully!");
 
-    // reset form
     document.getElementById("productTitle").value = "";
     document.getElementById("productPrice").value = "";
     document.getElementById("productDescription").value = "";
@@ -225,7 +211,6 @@ window.addProduct = async function () {
   }
 };
 
-//  Load Products 
 async function loadProducts() {
   const table = document.getElementById("productsTable");
   table.innerHTML = `<tr><td colspan="6" class="loading">Loading products...</td></tr>`;
@@ -247,7 +232,6 @@ async function loadProducts() {
   }
 }
 
-//  Render table 
 function renderTable(products) {
   const table = document.getElementById("productsTable");
 
@@ -258,7 +242,6 @@ function renderTable(products) {
 
   table.innerHTML = "";
   products.forEach(p => {
-    // images[0] is imageUrl0 — matches Product model
     const img = (p.images && p.images[0])
       ? p.images[0]
       : "https://via.placeholder.com/48?text=No+Img";
@@ -285,7 +268,6 @@ function renderTable(products) {
   });
 }
 
-//  Search products 
 window.searchProducts = function () {
   const q = document.getElementById("searchInput").value.toLowerCase();
   const filtered = allProducts.filter(p =>
@@ -294,7 +276,6 @@ window.searchProducts = function () {
   renderTable(filtered);
 };
 
-//  Delete product 
 window.deleteProduct = async function (id) {
   if (!confirm("Are you sure you want to delete this product?")) return;
   try {
@@ -309,7 +290,6 @@ window.deleteProduct = async function (id) {
   }
 };
 
-//  Open edit modal 
 window.openEditModal = function (id) {
   const p = allProducts.find(p => p.id === id);
   if (!p) return;
@@ -324,7 +304,6 @@ window.openEditModal = function (id) {
   document.getElementById("editCategory").value = p.categoryId || "";
   document.getElementById("editBrand").value = p.brandId || "";
 
-  // show existing images
   const img1 = (p.images && p.images[0]) ? p.images[0] : "";
   const img2 = (p.images && p.images[1]) ? p.images[1] : "";
   document.getElementById("editPreview1").src = img1;
@@ -340,7 +319,6 @@ window.closeEditModal = function () {
   document.getElementById("editModal").classList.remove("show");
 };
 
-//  Save edit 
 window.saveEdit = async function () {
   const id = document.getElementById("editProductId").value;
   const btn = document.getElementById("editSaveBtn");
@@ -366,7 +344,6 @@ window.saveEdit = async function () {
     const existingImages = product?.images || ["", ""];
     const ts = Date.now();
 
-    // upload new image 1 if selected
     const file1 = document.getElementById("editImage1").files[0];
     if (file1) {
       const comp1 = await compressImage(file1);
@@ -377,7 +354,6 @@ window.saveEdit = async function () {
       );
     }
 
-    // upload new image 2 if selected
     const file2 = document.getElementById("editImage2").files[0];
     if (file2) {
       const comp2 = await compressImage(file2);
@@ -393,7 +369,6 @@ window.saveEdit = async function () {
 
     await updateDoc(doc(db, "products", id), updateData);
 
-    // update local array
     const idx = allProducts.findIndex(p => p.id === id);
     if (idx !== -1) allProducts[idx] = { id, ...updateData };
 

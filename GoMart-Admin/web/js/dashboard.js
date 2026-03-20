@@ -9,7 +9,6 @@ import { getFirestore, collection, getDocs, query, orderBy, limit, where } from 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Auth check - redirect if not logged in
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -19,7 +18,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// Logout
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
@@ -34,7 +32,6 @@ async function loadDashboard() {
   ]);
 }
 
-// ── Stat counts 
 async function loadCounts() {
   try {
     const [brands, products, orders] = await Promise.all([
@@ -47,7 +44,6 @@ async function loadCounts() {
     document.getElementById("totalProducts").innerText = products.size;
     document.getElementById("totalOrders").innerText = orders.size;
 
-    // stockCount is the correct field from Product model
     const lowStockSnap = await getDocs(
       query(collection(db, "products"), where("stockCount", "<", 10))
     );
@@ -58,11 +54,9 @@ async function loadCounts() {
   }
 }
 
-// ── Recent orders 
 async function loadRecentOrders() {
   const tbody = document.getElementById("recentOrders");
   try {
-    // orderDate is the correct field from Order model
     const snap = await getDocs(
       query(collection(db, "orders"), orderBy("orderDate", "desc"), limit(5))
     );
@@ -83,10 +77,8 @@ async function loadRecentOrders() {
         cancelled: "s-cancelled"
       }[d.status] || "s-pending";
 
-      // customerName is inside shippingAddress.name from Order model
       const customerName = d.shippingAddress?.name || "—";
 
-      // orderDate is Timestamp from Order model
       const time = d.orderDate?.seconds
         ? new Date(d.orderDate.seconds * 1000).toLocaleTimeString()
         : "—";
@@ -105,11 +97,9 @@ async function loadRecentOrders() {
   }
 }
 
-// ── Inventory 
 async function loadInventory() {
   const container = document.getElementById("inventoryList");
   try {
-    // stockCount and title are correct fields from Product model
     const snap = await getDocs(
       query(collection(db, "products"), orderBy("stockCount", "asc"), limit(5))
     );

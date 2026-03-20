@@ -9,7 +9,6 @@ const storage = getStorage(app);
 
 let currentUser = null;
 
-//  Auth check 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -20,14 +19,12 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-//  Logout 
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-//  Show alert 
 function showAlert(alertId, message, type = "success") {
   const el = document.getElementById(alertId);
   el.textContent = message;
@@ -36,35 +33,29 @@ function showAlert(alertId, message, type = "success") {
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
 
-//  Load admin profile 
 function loadAdminProfile(user) {
   document.getElementById("adminEmail").textContent = user.email;
   document.getElementById("adminEmailField").value = user.email;
   document.getElementById("adminName").value = user.displayName || "";
 
-  // topbar initials
   const initial = (user.displayName || user.email || "A").charAt(0).toUpperCase();
   document.getElementById("profileInitial").textContent = initial;
 
-  // profile picture
   if (user.photoURL) {
     const img = document.getElementById("profilePicImg");
     img.src = user.photoURL;
     img.style.display = "block";
     document.getElementById("profileInitial").style.display = "none";
 
-    // update topbar avatar
     const topbar = document.getElementById("topbarAvatar");
     topbar.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
   }
 }
 
-//  Handle profile picture change 
 window.handlePicChange = function (input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
 
-  // preview immediately
   const reader = new FileReader();
   reader.onload = (e) => {
     const img = document.getElementById("profilePicImg");
@@ -75,7 +66,6 @@ window.handlePicChange = function (input) {
   reader.readAsDataURL(file);
 };
 
-//  Save admin profile 
 window.saveProfile = async function () {
   const name = document.getElementById("adminName").value.trim();
   const file = document.getElementById("picInput").files[0];
@@ -89,18 +79,15 @@ window.saveProfile = async function () {
   try {
     let photoURL = currentUser.photoURL || "";
 
-    // upload new profile picture if selected
     if (file) {
       photoURL = await uploadProfilePic(file);
     }
 
-    // update Firebase Auth profile
     await updateProfile(currentUser, {
       displayName: name,
       photoURL: photoURL
     });
 
-    // update topbar
     document.getElementById("adminEmail").textContent = currentUser.email;
     const topbar = document.getElementById("topbarAvatar");
     if (photoURL) {
@@ -120,13 +107,11 @@ window.saveProfile = async function () {
   }
 };
 
-//  Upload profile picture 
 function uploadProfilePic(file) {
   return new Promise((resolve, reject) => {
     const filePath = `adminProfiles/${currentUser.uid}_profile.webp`;
     const storageRef = ref(storage, filePath);
 
-    // compress first
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -164,7 +149,6 @@ function uploadProfilePic(file) {
   });
 }
 
-//  Password strength checker 
 window.checkStrength = function (password) {
   const segs = ["seg1", "seg2", "seg3", "seg4"];
   const label = document.getElementById("strengthLabel");
@@ -186,7 +170,6 @@ window.checkStrength = function (password) {
   label.style.color = strength > 0 ? colors[strength - 1] : "#94a3b8";
 };
 
-//  Change password 
 window.changePassword = async function () {
   const current = document.getElementById("currentPassword").value;
   const newPass = document.getElementById("newPassword").value;
@@ -202,11 +185,9 @@ window.changePassword = async function () {
   btn.textContent = "Updating...";
 
   try {
-    // re-authenticate first — required by Firebase before password change
     const credential = EmailAuthProvider.credential(currentUser.email, current);
     await reauthenticateWithCredential(currentUser, credential);
 
-    // update password
     await updatePassword(currentUser, newPass);
 
     document.getElementById("currentPassword").value = "";
@@ -232,7 +213,6 @@ window.changePassword = async function () {
   }
 };
 
-//  Load store info 
 async function loadStoreInfo() {
   try {
     const snap = await getDoc(doc(db, "settings", "storeInfo"));
@@ -248,7 +228,6 @@ async function loadStoreInfo() {
   }
 }
 
-//  Save store info 
 window.saveStoreInfo = async function () {
   const storeName = document.getElementById("storeName").value.trim();
   const storePhone = document.getElementById("storePhone").value.trim();
@@ -262,7 +241,6 @@ window.saveStoreInfo = async function () {
   btn.textContent = "Saving...";
 
   try {
-    // save to settings/storeInfo document in Firestore
     await setDoc(doc(db, "settings", "storeInfo"), {
       storeName,
       storePhone,
