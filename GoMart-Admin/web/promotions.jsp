@@ -3,10 +3,12 @@
 <html>
     <head>
         <title>GoMart Admin - Promotions</title>
-                <link rel="icon" type="image/png" href="images/logo.png" />
-
+        <link rel="icon" type="image/png" href="images/logo.png" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.css">
+
         <style>
             * {
                 box-sizing: border-box;
@@ -473,7 +475,7 @@
                 <div class="promo-preview" id="promoPreview">
                     <div class="promo-preview-title">Preview — how it looks on mobile</div>
                     <div class="notif-card">
-                        <div class="notif-icon"><i class="bi bi-tag-fill" style="font-size:20px;color:#f59e0b"></i></div>
+                        <div class="notif-icon"><i class="bi bi-bell-fill" style="font-size:20px;color:#f59e0b"></i></div>
                         <div>
                             <div class="notif-title" id="previewTitle">Title here</div>
                             <div class="notif-message" id="previewMessage">Message here</div>
@@ -514,5 +516,7 @@
         </div>
 
         <script type="module" src="js/promotions.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.js"></script>
+
     </body>
 </html>

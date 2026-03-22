@@ -3,11 +3,9 @@
 <html>
     <head>
         <title>GoMart Admin - Dashboard</title>
-        <link rel="icon" type="image/png" href="images/logo.png"  />
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="icon" type="image/png" href="images/logo.png" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
         <style>
             * {
                 box-sizing: border-box;
@@ -40,7 +38,7 @@
                 font-size: 18px;
                 font-weight: 600;
             }
-            .logo-sub {
+            .logo-sub  {
                 color: rgba(255,255,255,0.35);
                 font-size: 11px;
             }
@@ -89,7 +87,7 @@
                 color: #1a2332;
                 margin: 0;
             }
-            .page-sub {
+            .page-sub   {
                 font-size: 13px;
                 color: #64748b;
                 margin: 2px 0 0;
@@ -140,7 +138,11 @@
                 font-size: 22px;
                 flex-shrink: 0;
             }
-            .stat-val {
+            .stat-icon-box i {
+                font-size: 20px;
+                color: #333;
+            }
+            .stat-val   {
                 font-size: 26px;
                 font-weight: 700;
                 color: #1a2332;
@@ -157,6 +159,7 @@
                 border-radius: 14px;
                 border: 1px solid #e2e8f0;
                 padding: 20px;
+                margin-bottom: 20px;
             }
             .card-title-row {
                 display: flex;
@@ -169,10 +172,17 @@
                 font-weight: 600;
                 color: #1a2332;
             }
-            .card-link {
+            .card-link  {
                 font-size: 12px;
                 color: #22c55e;
                 text-decoration: none;
+            }
+            .card-link i {
+                margin-left: 6px;
+                transition: transform 0.2s ease;
+            }
+            .card-link:hover i {
+                transform: translateX(4px);
             }
 
             .table th {
@@ -189,7 +199,7 @@
                 vertical-align: middle;
                 border-bottom: 1px solid #f8fafc;
             }
-            .order-id {
+            .order-id    {
                 font-weight: 600;
             }
             .customer-name {
@@ -202,11 +212,11 @@
                 border-radius: 20px;
                 font-weight: 600;
             }
-            .s-pending {
+            .s-pending    {
                 background: #fef3c7;
                 color: #92400e;
             }
-            .s-delivered {
+            .s-delivered  {
                 background: #d1fae5;
                 color: #065f46;
             }
@@ -214,11 +224,14 @@
                 background: #dbeafe;
                 color: #1e40af;
             }
-            .s-cancelled {
+            .s-cancelled  {
                 background: #fee2e2;
                 color: #991b1b;
             }
-
+            .s-paid {
+                background: #fce7f3;
+                color: #9d174d;
+            }
             .inv-row {
                 display: flex;
                 align-items: center;
@@ -229,7 +242,7 @@
             .inv-row:last-child {
                 border-bottom: none;
             }
-            .inv-dot {
+            .inv-dot  {
                 width: 8px;
                 height: 8px;
                 border-radius: 50%;
@@ -240,13 +253,13 @@
                 color: #1a2332;
                 flex: 1;
             }
-            .inv-qty {
+            .inv-qty  {
                 font-size: 12px;
                 color: #64748b;
                 min-width: 60px;
                 text-align: right;
             }
-            .bar-bg {
+            .bar-bg   {
                 width: 80px;
                 height: 6px;
                 background: #f1f5f9;
@@ -257,10 +270,7 @@
                 height: 100%;
                 border-radius: 3px;
             }
-            .stat-icon-box i{
-                font-size:20px;
-                color:#333;
-            }
+
             .loading {
                 color: #94a3b8;
                 font-size: 13px;
@@ -274,38 +284,35 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
-                <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
+                <img src="images/logo.png" alt="GoMart" width="34" height="34"
+                     style="border-radius:8px;object-fit:cover;">
                 <div>
                     <div class="logo-text">GoMart</div>
                     <div class="logo-sub">Admin Panel</div>
                 </div>
             </div>
-
             <div class="nav-section">Main</div>
-            <a href="dashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-
+            <a href="dashboard.jsp" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <div class="nav-section">Catalog</div>
             <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
             <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
-
+            <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
             <div class="nav-section">Operations</div>
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
             <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
-
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
             <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
-
-            <!--  <a href="settings.jsp">&#9881; Settings</a>-->
-
             <div class="sidebar-bottom">
-                <a href="index.html" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <a href="index.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
             </div>
         </div>
 
+        <!-- MAIN -->
         <div class="main-content">
 
             <div class="topbar">
@@ -319,12 +326,12 @@
                 </div>
             </div>
 
+            <!-- Stat cards -->
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="stat-card">
                         <div class="stat-icon-box" style="background:#22c55e15">
                             <i class="fa-solid fa-box"></i>
-
                         </div>
                         <div>
                             <div class="stat-val" id="totalProducts">--</div>
@@ -334,7 +341,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="stat-card">
-                        <div class="stat-icon-box" style="background:#3b82f615">          
+                        <div class="stat-icon-box" style="background:#3b82f615">
                             <i class="fa-solid fa-tags"></i>
                         </div>
                         <div>
@@ -345,7 +352,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="stat-card">
-                        <div class="stat-icon-box" style="background:#f59e0b15">          
+                        <div class="stat-icon-box" style="background:#f59e0b15">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </div>
                         <div>
@@ -356,23 +363,27 @@
                 </div>
                 <div class="col-md-3">
                     <div class="stat-card">
-                        <div class="stat-icon-box" style="background:#ef444415">              
+                        <div class="stat-icon-box" style="background:#ef444415">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                         </div>
                         <div>
-                            <div class="stat-val" id="lowStock" style="color:#ef4444">--</div>
+                            <div class="stat-val" id="lowStock"
+                                 style="color:#ef4444">--</div>
                             <div class="stat-label">Low Stock Items</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row g-3">
-                <div class="col-md-7">
+            <!-- Row 1: Orders + Inventory -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
                     <div class="content-card">
                         <div class="card-title-row">
                             <span class="card-title">Recent Orders</span>
-                            <a href="orders.jsp" class="card-link">View all →</a>
+                            <a href="orders.jsp" class="card-link">
+                                View all <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                         </div>
                         <table class="table table-borderless mb-0">
                             <thead>
@@ -384,17 +395,20 @@
                                 </tr>
                             </thead>
                             <tbody id="recentOrders">
-                                <tr><td colspan="4" class="loading">Loading orders...</td></tr>
+                                <tr><td colspan="4" class="loading">
+                                        Loading orders...
+                                    </td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="content-card">
                         <div class="card-title-row">
                             <span class="card-title">Inventory Status</span>
-                            <a href="inventory.jsp" class="card-link">Manage →</a>
+                            <a href="inventory.jsp" class="card-link">
+                                Manage <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                         </div>
                         <div id="inventoryList">
                             <div class="loading">Loading inventory...</div>
@@ -402,6 +416,8 @@
                     </div>
                 </div>
             </div>
+
+
 
         </div>
 

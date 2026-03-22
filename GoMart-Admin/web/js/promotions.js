@@ -2,8 +2,8 @@ import { app } from "./firebase-config.js";
 import { getAuth, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, collection, addDoc, getDocs, deleteDoc,
-  doc, getDoc, query, orderBy, Timestamp
+  getFirestore, collection, addDoc, getDocs,
+  deleteDoc, doc, query, orderBy, Timestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const auth = getAuth(app);
@@ -31,8 +31,8 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
 
 function showAlert(message, type = "success") {
   const el = document.getElementById("alertMsg");
-  el.textContent = message;
-  el.className   = "alert-msg alert-" + type;
+  el.textContent   = message;
+  el.className     = "alert-msg alert-" + type;
   el.style.display = "block";
   setTimeout(() => { el.style.display = "none"; }, 3000);
 }
@@ -42,9 +42,7 @@ window.selectType = function (card, type) {
           .forEach(c => c.classList.remove("selected"));
   card.classList.add("selected");
   selectedType = type;
-  const icons = { PROMO, SALE, SYSTEM};
-  document.querySelector(".notif-icon").textContent =
-      icons[type] ;
+  
 };
 
 window.updatePreview = function () {
@@ -96,8 +94,8 @@ window.sendNotification = async function () {
 
     showAlert(
       "Sent to " + inAppCount + " users. " +
-      "Push notifications: " + fcmCount + " delivered, " +
-      fcmFailed + " skipped (no token)."
+      "Push: " + fcmCount + " delivered, " +
+      fcmFailed + " skipped."
     );
 
     document.getElementById("notifTitle").value   = "";
@@ -137,7 +135,7 @@ async function processUser(userDoc, title, message) {
 
   try {
     const fcmToken = userDoc.data()?.fcmToken;
-    if (!fcmToken) return result; 
+    if (!fcmToken) return result;
 
     const response = await fetch(BACKEND_URL, {
       method:  "POST",
@@ -153,7 +151,6 @@ async function processUser(userDoc, title, message) {
 
     if (response.ok) {
       result.fcmSent = true;
-      console.log("FCM sent to:", uid);
     } else {
       console.warn("FCM failed for " + uid + ":", response.status);
     }
@@ -164,41 +161,81 @@ async function processUser(userDoc, title, message) {
   return result;
 }
 
+
 async function loadNotifications() {
   const table = document.getElementById("notifTable");
   table.innerHTML =
     "<tr><td colspan='5' class='loading'>Loading notifications...</td></tr>";
 
   try {
-  
-    const snap = await getDocs(
-      query(collection(db, "notifications"),
-            orderBy("timestamp", "desc"))
+    const usersSnap = await getDocs(collection(db, "users"));
+    if (usersSnap.empty) {
+      showEmptyTable(table);
+      return;
+    }
+
+    const allItems = [];
+    const fetchTasks = [];
+
+    usersSnap.forEach(userDoc => {
+      const uid = userDoc.id;
+      fetchTasks.push(
+        getDocs(
+          collection(db, "notifications", uid, "items")
+        ).then(itemsSnap => {
+          itemsSnap.forEach(d => {
+            allItems.push({
+              id:    d.id,
+              ref:   d.ref,
+              ...d.data()
+            });
+          });
+        }).catch(e => {
+          // Silently skip users with no notifications
+          console.log("No notifications for user:", uid);
+        })
+      );
+    });
+
+    await Promise.all(fetchTasks);
+
+    const filtered = allItems.filter(n =>
+      n.type && n.type !== "ORDER"
     );
 
-    const all = [];
-    snap.forEach(d => all.push({ id: d.id, ...d.data() }));
+    
+    const seen   = new Set();
+    const unique = [];
+    filtered.sort((a, b) =>
+      (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)
+    );
+    filtered.forEach(n => {
+      const key = (n.title   || "") + "|" +
+                  (n.message || "") + "|" +
+                  (n.timestamp?.seconds || "");
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(n);
+      }
+    });
 
-    const filtered = all.filter(n => n.type !== "ORDER");
-
-    document.getElementById("totalSent").textContent  = filtered.length;
+    document.getElementById("totalSent").textContent =
+        unique.length;
     document.getElementById("promoCount").textContent =
-        filtered.filter(n =>
+        unique.filter(n =>
             n.type === "PROMO" || n.type === "SALE").length;
     document.getElementById("systemCount").textContent =
-        filtered.filter(n => n.type === "SYSTEM").length;
+        unique.filter(n => n.type === "SYSTEM").length;
     document.getElementById("notifCount").textContent =
-        "(" + filtered.length + ")";
+        "(" + unique.length + ")";
 
-    if (filtered.length === 0) {
-      table.innerHTML =
-        "<tr><td colspan='5' class='empty-state'>" +
-        "No notifications sent yet</td></tr>";
+    if (unique.length === 0) {
+      showEmptyTable(table);
       return;
     }
 
     table.innerHTML = "";
-    filtered.forEach(n => {
+    unique.forEach(n => {
       const time = n.timestamp?.seconds
         ? new Date(n.timestamp.seconds * 1000).toLocaleString()
         : "—";
@@ -207,7 +244,7 @@ async function loadNotifications() {
         SALE:   "t-sale",
         SYSTEM: "t-system"
       }[n.type] || "t-system";
-      const shortMsg = n.message?.length > 60
+      const shortMsg = (n.message || "").length > 60
         ? n.message.substring(0, 60) + "..."
         : (n.message || "—");
 
@@ -231,14 +268,52 @@ async function loadNotifications() {
   }
 }
 
+function showEmptyTable(table) {
+  document.getElementById("totalSent").textContent   = "0";
+  document.getElementById("promoCount").textContent  = "0";
+  document.getElementById("systemCount").textContent = "0";
+  document.getElementById("notifCount").textContent  = "(0)";
+  table.innerHTML =
+    "<tr><td colspan='5' class='empty-state'>" +
+    "No notifications sent yet</td></tr>";
+}
+
 window.deleteNotification = async function (id) {
-  if (!confirm("Delete this notification?")) return;
-  try {
-    await deleteDoc(doc(db, "notifications", id));
-    showAlert("Notification deleted.");
-    loadNotifications();
-  } catch (e) {
-    console.error("Delete error:", e);
-    showAlert("Failed to delete.", "error");
-  }
+  Swal.fire({
+    title: "Delete Notification?",
+    text: "This removes it from all users.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#36E41B",
+    confirmButtonText: "Yes, delete it!"
+  }).then(async (result) => {
+    if (!result.isConfirmed) return;
+    try {
+      const usersSnap = await getDocs(collection(db, "users"));
+      const toDelete  = [];
+
+      const lookupTasks = [];
+      usersSnap.forEach(userDoc => {
+        const uid = userDoc.id;
+        lookupTasks.push(
+          getDocs(collection(db, "notifications", uid, "items"))
+            .then(itemsSnap => {
+              itemsSnap.forEach(d => {
+                if (d.id === id) toDelete.push(d.ref);
+              });
+            })
+        );
+      });
+
+      await Promise.all(lookupTasks);
+      await Promise.all(toDelete.map(ref => deleteDoc(ref)));
+
+      Swal.fire("Deleted!", "Notification removed.", "success");
+      loadNotifications();
+    } catch (e) {
+      console.error("Delete error:", e);
+      Swal.fire("Error", "Failed to delete.", "error");
+    }
+  });
 };

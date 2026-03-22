@@ -161,15 +161,29 @@ async function loadBrands() {
 }
 
 window.deleteBrand = async function (id) {
-  if (!confirm("Are you sure you want to delete this brand?")) return;
-  try {
-    await deleteDoc(doc(db, "brands", id));
-    showAlert("Brand deleted.");
-    loadBrands();
-  } catch (e) {
-    console.error("Delete error:", e);
-    showAlert("Failed to delete brand.", "error");
-  }
+  Swal.fire({
+    title: "Delete Brand?",
+    text: "Are you sure you want to delete this brand?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#36E41B",
+    confirmButtonText: "Yes, delete it!"
+  }).then(async (result) => {
+    if (!result.isConfirmed) return;
+    try {
+      await deleteDoc(doc(db, "brands", id));
+      Swal.fire({
+        title: "Deleted!",
+        text: "Brand has been deleted.",
+        icon: "success"
+      });
+      loadBrands();
+    } catch (e) {
+      console.error("Delete error:", e);
+      Swal.fire("Error", "Failed to delete brand.", "error");
+    }
+  });
 };
 
 window.openEditModal = function (id, name, image) {
