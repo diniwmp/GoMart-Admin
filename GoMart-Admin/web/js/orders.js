@@ -51,9 +51,14 @@ try {
 
 function updateStats() {
     document.getElementById("totalOrders").textContent = allOrders.length;
-    document.getElementById("pendingOrders").textContent = allOrders.filter(o => o.status === "pending").length;
-    document.getElementById("processingOrders").textContent = allOrders.filter(o => o.status === "processing").length;
-    document.getElementById("deliveredOrders").textContent = allOrders.filter(o => o.status === "delivered").length;
+    document.getElementById("pendingOrders").textContent =
+        allOrders.filter(o => (o.status || "").toLowerCase() === "pending").length;
+    document.getElementById("processingOrders").textContent =
+        allOrders.filter(o => (o.status || "").toLowerCase() === "processing").length;
+    document.getElementById("deliveredOrders").textContent =
+        allOrders.filter(o =>
+            ["delivered", "paid"].includes((o.status || "").toLowerCase())
+        ).length;
 }
 
 function renderTable(orders) {
@@ -66,48 +71,54 @@ function renderTable(orders) {
 
     table.innerHTML = "";
     orders.forEach(d => {
-        const statusClass = {
-            pending: "s-pending",
-            delivered: "s-delivered",
-            processing: "s-processing",
-            cancelled: "s-cancelled"
-        }[d.status] || "s-pending";
+        const statusLower   = (d.status || "pending").toLowerCase();
+        const statusDisplay = statusLower.toUpperCase();
 
-        const customerName = d.shippingAddress?.name || "—";
-        const customerEmail = d.shippingAddress?.email || "—";
+        const statusClass = {
+            "pending":    "s-pending",
+            "delivered":  "s-delivered",
+            "processing": "s-processing",
+            "cancelled":  "s-cancelled",
+            "paid":       "s-paid"
+        }[statusLower] || "s-pending";
+
+        const customerName  = d.shippingAddress?.name  || "-";
+        const customerEmail = d.shippingAddress?.email || "-";
 
         const date = d.orderDate?.seconds
-                ? new Date(d.orderDate.seconds * 1000).toLocaleDateString()
-                : "—";
+            ? new Date(d.orderDate.seconds * 1000).toLocaleDateString()
+            : "-";
 
         const amount = d.totalAmount
-                ? `Rs. ${parseFloat(d.totalAmount).toFixed(2)}`
-                : "—";
+            ? `Rs. ${parseFloat(d.totalAmount).toFixed(2)}`
+            : "-";
 
         table.innerHTML += `
-      <tr>
-        <td><span class="order-id">#${d.id.substring(0, 6).toUpperCase()}</span></td>
-        <td>
-          <div class="customer-name">${customerName}</div>
-          <div class="customer-email">${customerEmail}</div>
-        </td>
-        <td><span class="order-amount">${amount}</span></td>
-        <td><span class="status-pill ${statusClass}">${d.status || "pending"}</span></td>
-        <td>${date}</td>
-        <td>
-          <button class="btn-view" onclick="openOrderModal('${d.id}')">View</button>
-        </td>
-      </tr>`;
+            <tr>
+                <td><span class="order-id">#${d.id.substring(0, 6).toUpperCase()}</span></td>
+                <td>
+                    <div class="customer-name">${customerName}</div>
+                    <div class="customer-email">${customerEmail}</div>
+                </td>
+                <td><span class="order-amount">${amount}</span></td>
+                <td><span class="status-pill ${statusClass}">${statusDisplay}</span></td>
+                <td>${date}</td>
+                <td>
+                    <button class="btn-view" onclick="openOrderModal('${d.id}')">View</button>
+                </td>
+            </tr>`;
     });
 }
 
 window.filterOrders = function (status, btn) {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".filter-btn")
+            .forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
     const filtered = status === "all"
-            ? allOrders
-            : allOrders.filter(o => o.status === status);
+        ? allOrders
+        : allOrders.filter(o =>
+            (o.status || "").toLowerCase() === status.toLowerCase());
 
     renderTable(filtered);
 };
@@ -131,14 +142,14 @@ window.openOrderModal = function (id) {
     document.getElementById("modalOrderId").textContent = `Order #${id.substring(0, 6).toUpperCase()}`;
     const date = order.orderDate?.seconds
             ? new Date(order.orderDate.seconds * 1000).toLocaleString()
-            : "—";
+            : "-";
     document.getElementById("modalOrderDate").textContent = date;
 
-    document.getElementById("modalCustomerName").textContent = order.shippingAddress?.name || "—";
-    document.getElementById("modalCustomerEmail").textContent = order.shippingAddress?.email || "—";
-    document.getElementById("modalCustomerContact").textContent = order.shippingAddress?.contact || "—";
-    document.getElementById("modalAddress").textContent = order.shippingAddress?.address || "—";
-    document.getElementById("modalAddressName").textContent = order.shippingAddress?.addressName || "—";
+    document.getElementById("modalCustomerName").textContent = order.shippingAddress?.name || "-";
+    document.getElementById("modalCustomerEmail").textContent = order.shippingAddress?.email || "-";
+    document.getElementById("modalCustomerContact").textContent = order.shippingAddress?.contact || "-";
+    document.getElementById("modalAddress").textContent = order.shippingAddress?.address || "-";
+    document.getElementById("modalAddressName").textContent = order.shippingAddress?.addressName || "-";
 
     const itemsContainer = document.getElementById("modalItems");
     itemsContainer.innerHTML = "";
@@ -161,7 +172,7 @@ window.openOrderModal = function (id) {
 
     document.getElementById("modalTotal").textContent = order.totalAmount
             ? `Rs. ${parseFloat(order.totalAmount).toFixed(2)}`
-            : "—";
+            : "-";
 
     document.getElementById("modalStatusSelect").value = order.status || "pending";
 

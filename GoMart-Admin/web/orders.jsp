@@ -292,7 +292,10 @@
                 font-size: 13px;
             }
 
-            /* Order detail modal */
+            .s-paid {
+                background: #fce7f3;
+                color: #9d174d;
+            }
             .modal-overlay {
                 display: none;
                 position: fixed;
@@ -400,7 +403,6 @@
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
                 <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
@@ -435,10 +437,8 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
-            <!-- Topbar -->
             <div class="topbar">
                 <div>
                     <p class="page-title">Order Management</p>
@@ -450,7 +450,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-val" id="totalOrders">--</div>
@@ -470,7 +469,6 @@
                 </div>
             </div>
 
-            <!-- Orders Table -->
             <div class="content-card">
                 <div class="card-title">All Orders</div>
 
@@ -503,7 +501,6 @@
 
         </div>
 
-        <!-- Order Detail Modal -->
         <div class="modal-overlay" id="orderModal">
             <div class="modal-box">
                 <div class="modal-title" id="modalOrderId">Order Details</div>
@@ -548,5 +545,6 @@
         </div>
 
         <script type="module" src="js/orders.js"></script>
+
     </body>
 </html>

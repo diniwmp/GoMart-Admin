@@ -161,15 +161,40 @@ async function loadCategories() {
 }
 
 window.deleteCategory = async function (id) {
-  if (!confirm("Are you sure you want to delete this category?")) return;
-  try {
-    await deleteDoc(doc(db, "categories", id));
-    showAlert("Category deleted.");
-    loadCategories();
-  } catch (e) {
-    console.error("Delete error:", e);
-    showAlert("Failed to delete category.", "error");
-  }
+  Swal.fire({
+    title: "Delete Category?",
+    text: "Are you sure you want to delete this category?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#36E41B",
+    confirmButtonText: "Yes, delete it!"
+  }).then(async (result) => {
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await deleteDoc(doc(db, "categories", id));
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "Category has been deleted.",
+        icon: "success"
+      });
+
+      loadCategories();
+
+    } catch (e) {
+      console.error("Delete error:", e);
+
+      Swal.fire(
+        "Error",
+        "Failed to delete category.",
+        "error"
+      );
+    }
+
+  });
 };
 
 window.openEditModal = function (id, name, image) {
