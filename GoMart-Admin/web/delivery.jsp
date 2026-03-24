@@ -438,7 +438,6 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
             <div class="topbar">
@@ -452,7 +451,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-val" id="totalDeliveries">--</div>
@@ -475,7 +473,6 @@
                 </div>
             </div>
 
-            <!-- Table -->
             <div class="content-card">
                 <div class="card-title">All Deliveries</div>
 
@@ -527,7 +524,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div class="modal-overlay" id="deliveryModal">
             <div class="modal-box">
                 <div class="modal-title" id="modalOrderId">

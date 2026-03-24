@@ -291,10 +291,31 @@
                 color: #94a3b8;
                 font-size: 13px;
             }
-
+ .status-pill {
+                font-size: 10px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-weight: 600;
+            }
+            .s-pending    {
+                background: #fef3c7;
+                color: #92400e;
+            }
+            .s-delivered  {
+                background:#e0e7ff  ;
+                color: #594a7f;
+            }
+            .s-processing {
+                background: #dbeafe;
+                color: #1e40af;
+            }
+            .s-cancelled  {
+                background: #fee2e2;
+                color: #991b1b;
+            }
             .s-paid {
-                background: #fce7f3;
-                color: #9d174d;
+                background: #d1fae5;
+                color: #065f46;
             }
             .modal-overlay {
                 display: none;

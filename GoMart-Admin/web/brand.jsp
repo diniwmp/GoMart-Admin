@@ -341,7 +341,6 @@
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
                 <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
@@ -376,10 +375,8 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
-            <!-- Topbar -->
             <div class="topbar">
                 <div>
                     <p class="page-title">Brand Management</p>
@@ -391,7 +388,6 @@
                 </div>
             </div>
 
-            <!-- Add Brand Form -->
             <div class="content-card">
                 <div class="card-title">Add New Brand</div>
                 <div class="row g-3">
@@ -414,7 +410,6 @@
                 <div class="alert-msg" id="alertMsg"></div>
             </div>
 
-            <!-- Brands Table -->
             <div class="content-card">
                 <div class="card-title">All Brands <span id="brandCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span></div>
                 <table class="table table-borderless mb-0">
@@ -434,7 +429,6 @@
 
         </div>
 
-        <!-- Edit Modal -->
         <div class="modal-overlay" id="editModal">
             <div class="modal-box">
                 <div class="modal-title">Edit Brand</div>

@@ -341,7 +341,6 @@
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
                 <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">

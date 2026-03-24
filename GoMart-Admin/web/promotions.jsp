@@ -415,7 +415,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-val" id="totalSent">--</div>
@@ -435,7 +434,6 @@
             <div class="content-card">
                 <div class="card-title">Send New Notification</div>
 
-                <!-- Type selector -->
                 <div class="mb-3">
                     <label class="form-label">Notification Type</label>
                     <div class="type-grid">

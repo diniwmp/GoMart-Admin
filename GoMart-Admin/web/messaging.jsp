@@ -486,7 +486,6 @@
 
             <div class="chat-wrapper">
 
-                <!-- User List -->
                 <div class="user-list-panel">
                     <div class="user-list-header">
                         <p class="user-list-title">Conversations</p>
@@ -497,7 +496,6 @@
                     </div>
                 </div>
 
-                <!-- Chat Panel -->
                 <div class="chat-panel">
                     <div class="chat-header" id="chatHeader" style="display:none">
                         <div class="chat-header-avatar" id="chatHeaderAvatar">?</div>
@@ -525,7 +523,6 @@
             </div>
         </div>
 
-        <!-- ── Single module script — no separate .js file needed ── -->
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
             import { getAuth, onAuthStateChanged, signOut }
@@ -623,7 +620,6 @@
                             + "</div>"
                             + '<div class="user-time">' + time + "</div>";
 
-                    // ── Attach click directly via addEventListener — no onclick attr needed
                     item.addEventListener("click", () => selectUser(u.id, item));
                     userListBody.appendChild(item);
                 });
