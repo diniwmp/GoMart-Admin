@@ -32,7 +32,6 @@ async function loadDashboard() {
     ]);
 }
 
-// ── Stat cards ────────────────────────────────────────────────────────────
 async function loadCounts() {
     try {
         const [brands, products, orders] = await Promise.all([
@@ -56,7 +55,6 @@ async function loadCounts() {
     }
 }
 
-// ── Recent Orders (limit 10, uppercase status) ────────────────────────────
 async function loadRecentOrders() {
     const tbody = document.getElementById("recentOrders");
     try {
@@ -111,7 +109,6 @@ async function loadRecentOrders() {
     }
 }
 
-// ── Inventory Status (limit 10) ───────────────────────────────────────────
 async function loadInventory() {
     const container = document.getElementById("inventoryList");
     try {

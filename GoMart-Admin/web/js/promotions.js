@@ -289,11 +289,12 @@ window.deleteNotification = async function (id) {
     confirmButtonText: "Yes, delete it!"
   }).then(async (result) => {
     if (!result.isConfirmed) return;
+
     try {
       const usersSnap = await getDocs(collection(db, "users"));
       const toDelete  = [];
-
       const lookupTasks = [];
+
       usersSnap.forEach(userDoc => {
         const uid = userDoc.id;
         lookupTasks.push(
@@ -309,11 +310,58 @@ window.deleteNotification = async function (id) {
       await Promise.all(lookupTasks);
       await Promise.all(toDelete.map(ref => deleteDoc(ref)));
 
-      Swal.fire("Deleted!", "Notification removed.", "success");
-      loadNotifications();
+    
+      const rows = document.querySelectorAll(
+              "#notifTable tr");
+      rows.forEach(row => {
+        const btn = row.querySelector(
+                ".btn-delete");
+        if (btn && btn.getAttribute("onclick")
+                .includes(id)) {
+          row.remove();
+        }
+      });
+
+      updateCountsFromTable();
+
+      Swal.fire("Deleted!",
+              "Notification removed.", "success");
+
     } catch (e) {
       console.error("Delete error:", e);
       Swal.fire("Error", "Failed to delete.", "error");
     }
   });
 };
+
+function updateCountsFromTable() {
+  const rows = document.querySelectorAll(
+          "#notifTable tr");
+
+  let total  = 0;
+  let promo  = 0;
+  let system = 0;
+
+  rows.forEach(row => {
+    const badge = row.querySelector(".type-badge");
+    if (!badge) return;
+    total++;
+    const type = badge.textContent.trim();
+    if (type === "PROMO" || type === "SALE") promo++;
+    if (type === "SYSTEM") system++;
+  });
+
+  document.getElementById("totalSent").textContent  = total;
+  document.getElementById("promoCount").textContent = promo;
+  document.getElementById("systemCount").textContent = system;
+  document.getElementById("notifCount").textContent =
+          "(" + total + ")";
+
+  if (total === 0) {
+    document.getElementById("notifTable").innerHTML =
+      "<tr><td colspan='5' class='empty-state'>" +
+      "No notifications sent yet</td></tr>";
+  }
+}
+
+

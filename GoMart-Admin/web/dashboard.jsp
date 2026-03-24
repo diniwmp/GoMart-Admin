@@ -217,8 +217,8 @@
                 color: #92400e;
             }
             .s-delivered  {
-                background: #d1fae5;
-                color: #065f46;
+                background:#e0e7ff  ;
+                color: #594a7f;
             }
             .s-processing {
                 background: #dbeafe;
@@ -229,8 +229,8 @@
                 color: #991b1b;
             }
             .s-paid {
-                background: #fce7f3;
-                color: #9d174d;
+                background:#d1fae5;
+                color: #065f46;
             }
             .inv-row {
                 display: flex;
@@ -312,7 +312,6 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
             <div class="topbar">
@@ -326,7 +325,6 @@
                 </div>
             </div>
 
-            <!-- Stat cards -->
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="stat-card">
@@ -375,7 +373,6 @@
                 </div>
             </div>
 
-            <!-- Row 1: Orders + Inventory -->
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <div class="content-card">

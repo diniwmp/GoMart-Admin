@@ -470,7 +470,6 @@
 
                 <div class="alert-msg" id="alertMsg"></div>
 
-                <!-- Filters -->
                 <div class="filter-row">
                     <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
                     <button class="filter-btn" onclick="filterProducts('in', this)">In Stock</button>

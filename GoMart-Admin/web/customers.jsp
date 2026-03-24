@@ -165,7 +165,6 @@
         </div>
     </div>
 
-    <!-- Stats -->
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-val" id="totalCustomers">--</div>
@@ -181,7 +180,6 @@
         </div>
     </div>
 
-    <!-- Customers Table -->
     <div class="content-card">
         <div class="card-title">All Customers <span id="customerCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span></div>
         <div class="filter-row">

@@ -52,13 +52,13 @@ try {
 function updateStats() {
     document.getElementById("totalOrders").textContent = allOrders.length;
     document.getElementById("pendingOrders").textContent =
-        allOrders.filter(o => (o.status || "").toLowerCase() === "pending").length;
+            allOrders.filter(o => (o.status || "").toLowerCase() === "pending").length;
     document.getElementById("processingOrders").textContent =
-        allOrders.filter(o => (o.status || "").toLowerCase() === "processing").length;
+            allOrders.filter(o => (o.status || "").toLowerCase() === "processing").length;
     document.getElementById("deliveredOrders").textContent =
-        allOrders.filter(o =>
-            ["delivered", "paid"].includes((o.status || "").toLowerCase())
-        ).length;
+            allOrders.filter(o =>
+                ["delivered", "paid"].includes((o.status || "").toLowerCase())
+            ).length;
 }
 
 function renderTable(orders) {
@@ -71,27 +71,27 @@ function renderTable(orders) {
 
     table.innerHTML = "";
     orders.forEach(d => {
-        const statusLower   = (d.status || "pending").toLowerCase();
+        const statusLower = (d.status || "pending").toLowerCase();
         const statusDisplay = statusLower.toUpperCase();
 
         const statusClass = {
-            "pending":    "s-pending",
-            "delivered":  "s-delivered",
+            "pending": "s-pending",
+            "delivered": "s-delivered",
             "processing": "s-processing",
-            "cancelled":  "s-cancelled",
-            "paid":       "s-paid"
+            "cancelled": "s-cancelled",
+            "paid": "s-paid"
         }[statusLower] || "s-pending";
 
-        const customerName  = d.shippingAddress?.name  || "-";
+        const customerName = d.shippingAddress?.name || "-";
         const customerEmail = d.shippingAddress?.email || "-";
 
         const date = d.orderDate?.seconds
-            ? new Date(d.orderDate.seconds * 1000).toLocaleDateString()
-            : "-";
+                ? new Date(d.orderDate.seconds * 1000).toLocaleDateString()
+                : "-";
 
         const amount = d.totalAmount
-            ? `Rs. ${parseFloat(d.totalAmount).toFixed(2)}`
-            : "-";
+                ? `Rs. ${parseFloat(d.totalAmount).toFixed(2)}`
+                : "-";
 
         table.innerHTML += `
             <tr>
@@ -116,9 +116,9 @@ window.filterOrders = function (status, btn) {
     btn.classList.add("active");
 
     const filtered = status === "all"
-        ? allOrders
-        : allOrders.filter(o =>
-            (o.status || "").toLowerCase() === status.toLowerCase());
+            ? allOrders
+            : allOrders.filter(o =>
+                (o.status || "").toLowerCase() === status.toLowerCase());
 
     renderTable(filtered);
 };
@@ -154,6 +154,14 @@ window.openOrderModal = function (id) {
     const itemsContainer = document.getElementById("modalItems");
     itemsContainer.innerHTML = "";
 
+    const hasBilling = order.billingAddress
+            && order.billingAddress.address
+            && order.billingAddress.address.trim() !== "";
+
+    const displayAddr = hasBilling
+            ? order.billingAddress
+            : order.shippingAddress;
+
     if (order.orderItems && order.orderItems.length > 0) {
         order.orderItems.forEach(item => {
             const subtotal = (item.unitPrice * item.quantity).toFixed(2);
@@ -177,6 +185,13 @@ window.openOrderModal = function (id) {
     document.getElementById("modalStatusSelect").value = order.status || "pending";
 
     document.getElementById("orderModal").classList.add("show");
+
+    document.getElementById("modalAddress").textContent =
+            displayAddr?.address || "-";
+    document.getElementById("modalAddressName").textContent =
+            hasBilling
+            ? "Recipient: " + (displayAddr?.name || "-")
+            : (displayAddr?.addressName || "-");
 };
 
 window.closeOrderModal = function () {
@@ -220,7 +235,7 @@ window.updateOrderStatus = async function () {
             select.style.borderColor = "";
         }, 2000);
 
-        showToast(`Order status updated to "${newStatus}" ✅`);
+        showToast(`Order status updated to "${newStatus}"`);
 
     } catch (e) {
         console.error("Update status error:", e);
