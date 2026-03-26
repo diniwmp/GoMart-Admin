@@ -3,13 +3,14 @@
 <html>
     <head>
         <title>GoMart Admin - Delivery</title>
-        <link rel="icon" type="image/png" href="images/logo.png" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="icon" type="image/png"
+              href="images/logo.png" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <style>
-            * {
-                box-sizing: border-box;
-            }
+            * { box-sizing: border-box; }
             body {
                 background: #f1f5f9;
                 margin: 0;
@@ -21,14 +22,14 @@
                 min-height: 100vh;
                 background: #1a2332;
                 position: fixed;
-                top: 0;
-                left: 0;
+                top: 0; left: 0;
                 display: flex;
                 flex-direction: column;
             }
             .sidebar-logo {
                 padding: 20px 16px;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
+                border-bottom: 1px solid
+                        rgba(255,255,255,0.08);
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -38,7 +39,7 @@
                 font-size: 18px;
                 font-weight: 600;
             }
-            .logo-sub  {
+            .logo-sub {
                 color: rgba(255,255,255,0.35);
                 font-size: 11px;
             }
@@ -61,14 +62,16 @@
                 font-size: 13px;
                 transition: all 0.15s;
             }
-            .sidebar a:hover, .sidebar a.active {
+            .sidebar a:hover,
+            .sidebar a.active {
                 background: rgba(34,197,94,0.15);
                 color: #22c55e;
             }
             .sidebar-bottom {
                 margin-top: auto;
                 padding: 8px;
-                border-top: 1px solid rgba(255,255,255,0.08);
+                border-top: 1px solid
+                        rgba(255,255,255,0.08);
             }
 
             .main-content {
@@ -87,7 +90,7 @@
                 color: #1a2332;
                 margin: 0;
             }
-            .page-sub   {
+            .page-sub {
                 font-size: 13px;
                 color: #64748b;
                 margin: 2px 0 0;
@@ -102,8 +105,7 @@
                 padding: 6px 14px 6px 8px;
             }
             .admin-avatar {
-                width: 28px;
-                height: 28px;
+                width: 28px; height: 28px;
                 border-radius: 50%;
                 background: #22c55e20;
                 display: flex;
@@ -125,13 +127,13 @@
                 gap: 14px;
                 margin-bottom: 24px;
             }
-            .stat-card  {
+            .stat-card {
                 background: #fff;
                 border-radius: 14px;
                 border: 1px solid #e2e8f0;
                 padding: 16px 20px;
             }
-            .stat-val   {
+            .stat-val {
                 font-size: 24px;
                 font-weight: 700;
                 color: #1a2332;
@@ -149,7 +151,7 @@
                 padding: 24px;
                 margin-bottom: 24px;
             }
-            .card-title   {
+            .card-title {
                 font-size: 15px;
                 font-weight: 600;
                 color: #1a2332;
@@ -173,7 +175,7 @@
                 cursor: pointer;
                 transition: all 0.15s;
             }
-            .filter-btn:hover  {
+            .filter-btn:hover {
                 border-color: #22c55e;
                 color: #22c55e;
             }
@@ -211,13 +213,11 @@
                 border-bottom: 1px solid #f8fafc;
                 padding: 12px;
             }
-            .order-id         {
+            .order-id {
                 font-weight: 600;
                 color: #1a2332;
             }
-            .customer-name    {
-                font-weight: 500;
-            }
+            .customer-name { font-weight: 500; }
             .customer-address {
                 font-size: 11px;
                 color: #94a3b8;
@@ -238,13 +238,22 @@
                 background: #dbeafe;
                 color: #1e40af;
             }
+            .s-shipped    {
+                 background: #fef3c7;
+                color: #92400e;
+            }
             .s-delivered  {
-                background: #d1fae5;
-                color: #065f46;
+                 background: #ede9fe;
+                color: #6d28d9;
             }
             .s-cancelled  {
                 background: #fee2e2;
                 color: #991b1b;
+            }
+            
+              .s-paid {
+                background: #d1fae5;
+                color: #065f46;
             }
 
             .btn-view {
@@ -256,11 +265,9 @@
                 font-size: 12px;
                 cursor: pointer;
             }
-            .btn-view:hover {
-                background: #f1f5f9;
-            }
+            .btn-view:hover { background: #f1f5f9; }
 
-            .loading     {
+            .loading {
                 color: #94a3b8;
                 font-size: 13px;
                 text-align: center;
@@ -276,18 +283,14 @@
             .modal-overlay {
                 display: none;
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
                 background: rgba(0,0,0,0.4);
                 z-index: 999;
                 align-items: center;
                 justify-content: center;
             }
-            .modal-overlay.show {
-                display: flex;
-            }
+            .modal-overlay.show { display: flex; }
             .modal-box {
                 background: #fff;
                 border-radius: 14px;
@@ -303,12 +306,11 @@
                 color: #1a2332;
                 margin-bottom: 4px;
             }
-            .modal-sub   {
+            .modal-sub {
                 font-size: 12px;
                 color: #94a3b8;
-                margin-bottom: 20px;
+                margin-bottom: 16px;
             }
-
             .detail-section-title {
                 font-size: 11px;
                 color: #94a3b8;
@@ -327,9 +329,7 @@
             .detail-row:last-child {
                 border-bottom: none;
             }
-            .detail-label {
-                color: #64748b;
-            }
+            .detail-label { color: #64748b; }
             .detail-value {
                 color: #1a2332;
                 font-weight: 500;
@@ -344,27 +344,24 @@
             .timeline::before {
                 content: "";
                 position: absolute;
-                left: 7px;
-                top: 0;
-                bottom: 0;
+                left: 7px; top: 0; bottom: 0;
                 width: 2px;
                 background: #f1f5f9;
             }
-            .timeline-item  {
+            .timeline-item {
                 position: relative;
                 margin-bottom: 20px;
             }
-            .timeline-dot   {
+            .timeline-dot {
                 position: absolute;
                 left: -21px;
-                width: 14px;
-                height: 14px;
+                width: 14px; height: 14px;
                 border-radius: 50%;
                 border: 2px solid #e2e8f0;
                 background: #fff;
                 top: 2px;
             }
-            .timeline-dot.done   {
+            .timeline-dot.done {
                 background: #22c55e;
                 border-color: #22c55e;
             }
@@ -372,12 +369,16 @@
                 background: #3b82f6;
                 border-color: #3b82f6;
             }
+            .timeline-dot.cancelled-dot {
+                background: #ef4444;
+                border-color: #ef4444;
+            }
             .timeline-label {
                 font-size: 13px;
                 font-weight: 500;
                 color: #1a2332;
             }
-            .timeline-time  {
+            .timeline-time {
                 font-size: 11px;
                 color: #94a3b8;
                 margin-top: 2px;
@@ -406,7 +407,8 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
-                <img src="images/logo.png" alt="GoMart" width="34" height="34"
+                <img src="images/logo.png" alt="GoMart"
+                     width="34" height="34"
                      style="border-radius:8px;object-fit:cover;">
                 <div>
                     <div class="logo-text">GoMart</div>
@@ -414,90 +416,136 @@
                 </div>
             </div>
             <div class="nav-section">Main</div>
-            <a href="dashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-
+            <a href="dashboard.jsp">
+                <i class="fa-solid fa-gauge"></i>
+                Dashboard
+            </a>
             <div class="nav-section">Catalog</div>
-            <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
-            <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
-
+            <a href="products.jsp">
+                <i class="fa-solid fa-box"></i> Products
+            </a>
+            <a href="categories.jsp">
+                <i class="fa-solid fa-layer-group"></i>
+                Categories
+            </a>
+            <a href="brand.jsp">
+                <i class="fa-solid fa-tags"></i> Brands
+            </a>
             <div class="nav-section">Operations</div>
-            <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
-            <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
-            <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
-
+            <a href="orders.jsp">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Orders
+            </a>
+            <a href="inventory.jsp">
+                <i class="fa-solid fa-warehouse"></i>
+                Inventory
+            </a>
+            <a href="delivery.jsp" class="active">
+                <i class="fa-solid fa-truck"></i>
+                Delivery
+            </a>
+            <a href="promotions.jsp">
+                <i class="fa-solid fa-bullhorn"></i>
+                Notifications
+            </a>
             <div class="nav-section">System</div>
-            <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
-            <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
-
-            <!--  <a href="settings.jsp">&#9881; Settings</a>-->
-
+            <a href="customers.jsp">
+                <i class="fa-solid fa-users"></i>
+                Customers
+            </a>
+            <a href="messaging.jsp">
+                <i class="fa-solid fa-envelope"></i>
+                Messages
+            </a>
             <div class="sidebar-bottom">
-                <a href="index.html" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <a href="index.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
             </div>
         </div>
 
+        <!-- MAIN CONTENT -->
         <div class="main-content">
 
             <div class="topbar">
                 <div>
-                    <p class="page-title">Delivery Tracking</p>
-                    <p class="page-sub">View and track order delivery status</p>
+                    <p class="page-title">
+                        Delivery Tracking
+                    </p>
+                    <p class="page-sub">
+                        View and track order delivery status
+                    </p>
                 </div>
                 <div class="admin-badge">
                     <div class="admin-avatar">AD</div>
-                    <span class="admin-name" id="adminEmail">Admin</span>
+                    <span class="admin-name"
+                          id="adminEmail">Admin</span>
                 </div>
             </div>
 
+            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-val" id="totalDeliveries">--</div>
-                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-val"
+                         id="totalDeliveries">--</div>
+                    <div class="stat-label">
+                        Total Orders
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val" id="pendingCount"
+                    <div class="stat-val"
+                         id="pendingCount"
                          style="color:#f59e0b">--</div>
                     <div class="stat-label">Pending</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val" id="processingCount"
+                    <div class="stat-val"
+                         id="processingCount"
                          style="color:#3b82f6">--</div>
-                    <div class="stat-label">Processing</div>
+                    <div class="stat-label">
+                        Processing
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val" id="deliveredCount"
+                    <div class="stat-val"
+                         id="deliveredCount"
                          style="color:#22c55e">--</div>
-                    <div class="stat-label">Delivered</div>
+                    <div class="stat-label">
+                        Delivered
+                    </div>
                 </div>
             </div>
 
             <div class="content-card">
-                <div class="card-title">All Deliveries</div>
+                <div class="card-title">
+                    All Deliveries
+                </div>
 
                 <div class="filter-row">
                     <button class="filter-btn active"
-                            onclick="filterDeliveries('all', this)">
+                      onclick="filterDeliveries('all',this)">
                         All
                     </button>
+                   
                     <button class="filter-btn"
-                            onclick="filterDeliveries('pending', this)">
-                        Pending
-                    </button>
-                    <button class="filter-btn"
-                            onclick="filterDeliveries('processing', this)">
+                      onclick="filterDeliveries('processing',this)">
                         Processing
                     </button>
                     <button class="filter-btn"
-                            onclick="filterDeliveries('delivered', this)">
+                      onclick="filterDeliveries('shipped',this)">
+                        Shipped
+                    </button>
+                    <button class="filter-btn"
+                      onclick="filterDeliveries('delivered',this)">
                         Delivered
                     </button>
                     <button class="filter-btn"
-                            onclick="filterDeliveries('cancelled', this)">
+                      onclick="filterDeliveries('cancelled',this)">
                         Cancelled
                     </button>
-                    <input type="text" class="search-input"
+                    <input type="text"
+                           class="search-input"
                            id="searchInput"
                            placeholder="Search customer..."
                            oninput="searchDeliveries()">
@@ -508,7 +556,7 @@
                         <tr>
                             <th>Order ID</th>
                             <th>Customer</th>
-                            <th>Address</th>
+                            <th>Delivery Address</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -526,51 +574,69 @@
 
         <div class="modal-overlay" id="deliveryModal">
             <div class="modal-box">
-                <div class="modal-title" id="modalOrderId">
+                <div class="modal-title"
+                     id="modalOrderId">
                     Delivery Details
                 </div>
-                <div class="modal-sub" id="modalOrderDate"></div>
+                <div class="modal-sub"
+                     id="modalOrderDate"></div>
 
-                <div id="modalStatus"></div>
+                <div id="modalStatus"
+                     style="margin-bottom:16px"></div>
 
-                <div class="detail-section-title">Customer Info</div>
-                <div class="detail-row">
-                    <span class="detail-label">Name</span>
-                    <span class="detail-value" id="modalName">—</span>
+                <div class="detail-section-title">
+                    Customer Info
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Contact</span>
-                    <span class="detail-value" id="modalContact">—</span>
+                    <span class="detail-label">Name</span>
+                    <span class="detail-value"
+                          id="modalName">—</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">
+                        Contact
+                    </span>
+                    <span class="detail-value"
+                          id="modalContact">—</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Email</span>
-                    <span class="detail-value" id="modalEmail">—</span>
+                    <span class="detail-value"
+                          id="modalEmail">—</span>
                 </div>
 
-                <div class="detail-section-title">Delivery Address</div>
+                <div class="detail-section-title">
+                    Delivery Address
+                </div>
                 <div class="detail-row">
-                    <span class="detail-label">Address</span>
-                    <span class="detail-value" id="modalAddress">—</span>
+                    <span class="detail-label">
+                        Address
+                    </span>
+                    <span class="detail-value"
+                          id="modalAddress">—</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Label</span>
-                    <span class="detail-value" id="modalAddressName">—</span>
+                    <span class="detail-value"
+                          id="modalAddressName">—</span>
                 </div>
 
                 <div class="detail-section-title">
                     Delivery Timeline
                 </div>
-                <div class="timeline" id="modalTimeline"></div>
+                <div class="timeline"
+                     id="modalTimeline"></div>
 
                 <div class="modal-footer">
                     <button class="btn-close-modal"
-                            onclick="closeDeliveryModal()">
+                      onclick="closeDeliveryModal()">
                         Close
                     </button>
                 </div>
             </div>
         </div>
 
-        <script type="module" src="js/delivery.js"></script>
+        <script type="module"
+                src="js/delivery.js"></script>
     </body>
 </html>
