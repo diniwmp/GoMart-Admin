@@ -301,7 +301,7 @@
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
             <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>

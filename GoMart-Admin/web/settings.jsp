@@ -334,7 +334,6 @@
                 font-weight: 600;
             }
 
-            /* Password strength */
             .strength-bar {
                 display: flex;
                 gap: 4px;
@@ -356,7 +355,6 @@
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
                 <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
@@ -377,7 +375,7 @@
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
 
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>

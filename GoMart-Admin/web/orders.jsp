@@ -235,7 +235,7 @@
                 border-radius: 20px;
                 font-weight: 600;
             }
-            .s-pending {
+            .s-shipped{
                 background: #fef3c7;
                 color: #92400e;
             }
@@ -291,7 +291,7 @@
                 color: #94a3b8;
                 font-size: 13px;
             }
- .status-pill {
+            .status-pill {
                 font-size: 10px;
                 padding: 4px 10px;
                 border-radius: 20px;
@@ -302,8 +302,8 @@
                 color: #92400e;
             }
             .s-delivered  {
-                background:#e0e7ff  ;
-                color: #594a7f;
+                background: #ede9fe;
+                color: #6d28d9;
             }
             .s-processing {
                 background: #dbeafe;
@@ -445,7 +445,7 @@
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
 
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
@@ -496,8 +496,8 @@
                 <!-- Filters -->
                 <div class="filter-row">
                     <button class="filter-btn active" onclick="filterOrders('all', this)">All</button>
-                    <button class="filter-btn" onclick="filterOrders('pending', this)">Pending</button>
                     <button class="filter-btn" onclick="filterOrders('processing', this)">Processing</button>
+                    <button class="filter-btn" onclick="filterOrders('shipped', this)">Shipped</button> 
                     <button class="filter-btn" onclick="filterOrders('delivered', this)">Delivered</button>
                     <button class="filter-btn" onclick="filterOrders('cancelled', this)">Cancelled</button>
                     <input type="text" class="search-input" id="searchInput" placeholder="Search by customer name..." oninput="searchOrders()">
@@ -551,8 +551,8 @@
                     <div class="detail-row">
                         <span class="detail-label">Update Status</span>
                         <select class="status-select" id="modalStatusSelect" onchange="updateOrderStatus()">
-                            <option value="pending">Pending</option>
                             <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>      
                             <option value="delivered">Delivered</option>
                             <option value="cancelled">Cancelled</option>
                         </select>

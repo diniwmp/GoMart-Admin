@@ -61,6 +61,21 @@ function updateStats() {
             ).length;
 }
 
+/**
+ * Returns the address to display in the table/modal.
+ * Logic mirrors the mobile app:
+ *   - If billingAddress exists and has a non-empty address → use billingAddress
+ *   - Otherwise → use shippingAddress
+ */
+function resolveDisplayAddress(order) {
+    const hasBilling =
+        order.billingAddress &&
+        order.billingAddress.address &&
+        order.billingAddress.address.trim() !== "";
+
+    return hasBilling ? order.billingAddress : order.shippingAddress;
+}
+
 function renderTable(orders) {
     const table = document.getElementById("ordersTable");
 
@@ -82,7 +97,8 @@ function renderTable(orders) {
             "paid": "s-paid"
         }[statusLower] || "s-pending";
 
-        const customerName = d.shippingAddress?.name || "-";
+        // Always show sender (payer) name/email from shippingAddress
+        const customerName  = d.shippingAddress?.name  || "-";
         const customerEmail = d.shippingAddress?.email || "-";
 
         const date = d.orderDate?.seconds
@@ -134,8 +150,7 @@ window.searchOrders = function () {
 
 window.openOrderModal = function (id) {
     const order = allOrders.find(o => o.id === id);
-    if (!order)
-        return;
+    if (!order) return;
 
     currentOrderId = id;
 
@@ -145,22 +160,38 @@ window.openOrderModal = function (id) {
             : "-";
     document.getElementById("modalOrderDate").textContent = date;
 
-    document.getElementById("modalCustomerName").textContent = order.shippingAddress?.name || "-";
-    document.getElementById("modalCustomerEmail").textContent = order.shippingAddress?.email || "-";
+    // ── Sender / payer info always comes from shippingAddress ──
+    document.getElementById("modalCustomerName").textContent    = order.shippingAddress?.name    || "-";
+    document.getElementById("modalCustomerEmail").textContent   = order.shippingAddress?.email   || "-";
     document.getElementById("modalCustomerContact").textContent = order.shippingAddress?.contact || "-";
-    document.getElementById("modalAddress").textContent = order.shippingAddress?.address || "-";
-    document.getElementById("modalAddressName").textContent = order.shippingAddress?.addressName || "-";
 
+    // ── Delivery address: billing if present, else shipping ──
+    const hasBilling =
+        order.billingAddress &&
+        order.billingAddress.address &&
+        order.billingAddress.address.trim() !== "";
+
+    const displayAddr = hasBilling ? order.billingAddress : order.shippingAddress;
+
+    document.getElementById("modalAddress").textContent =
+            displayAddr?.address || "-";
+
+    // Show a clear label so admin knows whether this is
+    // the buyer's own address or a different recipient
+    if (hasBilling) {
+        // Recipient / billing address
+        const recipientName = order.billingAddress?.name || "";
+        document.getElementById("modalAddressName").textContent =
+                recipientName ? `Recipient: ${recipientName}` : "Recipient Address";
+    } else {
+        // Buyer's own saved address label (e.g. "Home", "Office")
+        document.getElementById("modalAddressName").textContent =
+                order.shippingAddress?.addressName || "-";
+    }
+
+    // ── Order items ──
     const itemsContainer = document.getElementById("modalItems");
     itemsContainer.innerHTML = "";
-
-    const hasBilling = order.billingAddress
-            && order.billingAddress.address
-            && order.billingAddress.address.trim() !== "";
-
-    const displayAddr = hasBilling
-            ? order.billingAddress
-            : order.shippingAddress;
 
     if (order.orderItems && order.orderItems.length > 0) {
         order.orderItems.forEach(item => {
@@ -185,13 +216,6 @@ window.openOrderModal = function (id) {
     document.getElementById("modalStatusSelect").value = order.status || "pending";
 
     document.getElementById("orderModal").classList.add("show");
-
-    document.getElementById("modalAddress").textContent =
-            displayAddr?.address || "-";
-    document.getElementById("modalAddressName").textContent =
-            hasBilling
-            ? "Recipient: " + (displayAddr?.name || "-")
-            : (displayAddr?.addressName || "-");
 };
 
 window.closeOrderModal = function () {
@@ -200,13 +224,11 @@ window.closeOrderModal = function () {
 };
 
 window.updateOrderStatus = async function () {
-    if (!currentOrderId)
-        return;
+    if (!currentOrderId) return;
 
     const newStatus = document.getElementById("modalStatusSelect").value;
     const order = allOrders.find(o => o.id === currentOrderId);
-    if (!order)
-        return;
+    if (!order) return;
 
     const btnUpdate = document.getElementById("btnUpdateStatus");
     if (btnUpdate) {
@@ -219,10 +241,8 @@ window.updateOrderStatus = async function () {
             status: newStatus
         });
         if (order.userId && currentOrderId) {
-            await saveInAppNotification(
-                    order.userId, newStatus, currentOrderId);
-            await sendFcmNotification(
-                    order.userId, newStatus, currentOrderId);
+            await saveInAppNotification(order.userId, newStatus, currentOrderId);
+            await sendFcmNotification(order.userId, newStatus, currentOrderId);
         }
 
         order.status = newStatus;
@@ -231,9 +251,7 @@ window.updateOrderStatus = async function () {
 
         const select = document.getElementById("modalStatusSelect");
         select.style.borderColor = "#22c55e";
-        setTimeout(() => {
-            select.style.borderColor = "";
-        }, 2000);
+        setTimeout(() => { select.style.borderColor = ""; }, 2000);
 
         showToast(`Order status updated to "${newStatus}"`);
 
@@ -250,7 +268,7 @@ window.updateOrderStatus = async function () {
 
 async function saveInAppNotification(userId, status, orderId) {
     const shortId = orderId.substring(0, 6).toUpperCase();
-    const title = getStatusTitle(status);
+    const title   = getStatusTitle(status);
     const message = getStatusMessage(status, shortId);
 
     try {
@@ -265,29 +283,23 @@ async function saveInAppNotification(userId, status, orderId) {
                     timestamp: Timestamp.now()
                 }
         );
-        console.log(" Notification saved for:", userId);
+        console.log("Notification saved for:", userId);
     } catch (e) {
         console.error("Save failed:", e);
     }
 }
 
 async function sendFcmNotification(userId, status, orderId) {
-    if (!orderId) {
-        console.warn("No orderId provided, skipping FCM");
-        return;
-    }
+    if (!orderId) { console.warn("No orderId provided, skipping FCM"); return; }
 
     try {
         const userSnap = await getDoc(doc(db, "users", userId));
         const fcmToken = userSnap.data()?.fcmToken;
 
-        if (!fcmToken) {
-            console.warn("No FCM token for user:", userId);
-            return;
-        }
+        if (!fcmToken) { console.warn("No FCM token for user:", userId); return; }
 
         const shortId = orderId.substring(0, 6).toUpperCase();
-        const title = getStatusTitle(status);
+        const title   = getStatusTitle(status);
         const message = getStatusMessage(status, shortId);
 
         const response = await fetch(
@@ -295,21 +307,12 @@ async function sendFcmNotification(userId, status, orderId) {
                 {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        token: fcmToken,
-                        title: title,
-                        message: message,
-                        orderId: orderId,
-                        type: "ORDER"
-                    })
+                    body: JSON.stringify({ token: fcmToken, title, message, orderId, type: "ORDER" })
                 }
         );
 
-        if (response.ok) {
-            console.log("FCM sent to:", userId);
-        } else {
-            console.warn("FCM failed:", response.status);
-        }
+        if (response.ok) { console.log("FCM sent to:", userId); }
+        else             { console.warn("FCM failed:", response.status); }
 
     } catch (e) {
         console.warn("FCM skipped:", e.message);
@@ -318,20 +321,20 @@ async function sendFcmNotification(userId, status, orderId) {
 
 function getStatusTitle(status) {
     const titles = {
-        pending: "Order Received",
         processing: "Order Processing",
-        delivered: "Order Delivered!",
-        cancelled: "Order Cancelled"
+        shipped:    "Order Shipped!",
+        delivered:  "Order Delivered!",
+        cancelled:  "Order Cancelled"
     };
     return titles[status] || "Order Update";
 }
 
 function getStatusMessage(status, shortId) {
     const messages = {
-        pending: `Your order #${shortId} has been received and is awaiting processing.`,
-        processing: `Your order #${shortId} is being prepared and will be shipped soon.`,
-        delivered: `Your order #${shortId} has been delivered. Thank you for shopping with GoMart!`,
-        cancelled: `Your order #${shortId} has been cancelled. Contact support if you have questions.`
+        processing: `Your order #${shortId} has been confirmed and is now being prepared by our team.`,
+        shipped:    `Your order #${shortId} is on the way! Our delivery team has picked it up and is heading to your address.`,
+        delivered:  `Your order #${shortId} has been successfully delivered. We hope you enjoy your groceries! Thank you for shopping with GoMart.`,
+        cancelled:  `Your order #${shortId} has been cancelled. If you have any questions, please contact our support team.`
     };
     return messages[status] || `Your order #${shortId} status has been updated to ${status}.`;
 }
@@ -352,15 +355,13 @@ function showToast(message, type = "success") {
         document.body.appendChild(toast);
     }
 
-    toast.textContent = message;
+    toast.textContent    = message;
     toast.style.background = type === "error" ? "#ef4444" : "#22c55e";
-    toast.style.opacity = "1";
-    toast.style.display = "block";
+    toast.style.opacity  = "1";
+    toast.style.display  = "block";
 
     setTimeout(() => {
         toast.style.opacity = "0";
-        setTimeout(() => {
-            toast.style.display = "none";
-        }, 300);
+        setTimeout(() => { toast.style.display = "none"; }, 300);
     }, 3000);
 }

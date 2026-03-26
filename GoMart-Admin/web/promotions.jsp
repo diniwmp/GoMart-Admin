@@ -388,7 +388,7 @@
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Promotions</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
 
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
@@ -401,12 +401,11 @@
             </div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-content">
 
             <div class="topbar">
                 <div>
-                    <p class="page-title">Promotional Messages</p>
+                    <p class="page-title">Notifications</p>
                     <p class="page-sub">Send notifications to all customers</p>
                 </div>
                 <div class="admin-badge">
