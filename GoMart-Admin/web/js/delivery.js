@@ -42,11 +42,25 @@ async function loadDeliveries() {
 }
 
 function updateStats() {
-  const getCount = (status) => allOrders.filter(o => (o.status || "").toLowerCase() === status).length;
-  document.getElementById("totalDeliveries").textContent = allOrders.length;
-  document.getElementById("pendingCount").textContent = getCount("pending");
-  document.getElementById("processingCount").textContent = getCount("processing");
-  document.getElementById("deliveredCount").textContent = getCount("delivered");
+  const count = (status) =>
+    allOrders.filter(o =>
+      (o.status || "").toLowerCase() === status
+    ).length;
+
+  document.getElementById("totalDeliveries")
+          .textContent = allOrders.length;
+
+  document.getElementById("processingCount")
+          .textContent = count("processing");
+
+  document.getElementById("shippedCount")
+          .textContent = count("shipped");
+
+  document.getElementById("deliveredCount")
+          .textContent = count("delivered");
+
+  document.getElementById("cancelledCount")
+          .textContent = count("cancelled");
 }
 
 function resolveDeliveryAddress(order) {
