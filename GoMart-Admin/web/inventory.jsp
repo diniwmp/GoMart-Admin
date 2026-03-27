@@ -410,11 +410,11 @@
             <div class="nav-section">Catalog</div>
             <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
             <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
+            <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
 
             <div class="nav-section">Operations</div>
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
-            <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
+            <a href="inventory.jsp" class="active"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
             <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
 

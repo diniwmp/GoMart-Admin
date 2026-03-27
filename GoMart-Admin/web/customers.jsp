@@ -145,7 +145,7 @@
     <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
     <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
     <div class="nav-section">System</div>
-    <a href="customers.jsp" class="active"><i class="fa-solid fa-users"></i> Customers</a>
+    <a href="customers.jsp"class="active" ><i class="fa-solid fa-users"></i> Customers</a>
     <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
 
     <div class="sidebar-bottom">
