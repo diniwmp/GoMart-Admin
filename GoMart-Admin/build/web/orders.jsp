@@ -2,13 +2,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>GoMart Admin - Delivery</title>
-        <link rel="icon" type="image/png"
-              href="images/logo.png" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-              rel="stylesheet">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>GoMart Admin - Orders</title>
+        <link rel="icon" type="image/png" href="images/logo.png"" />
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
         <style>
             * {
                 box-sizing: border-box;
@@ -31,8 +30,7 @@
             }
             .sidebar-logo {
                 padding: 20px 16px;
-                border-bottom: 1px solid
-                    rgba(255,255,255,0.08);
+                border-bottom: 1px solid rgba(255,255,255,0.08);
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -65,16 +63,14 @@
                 font-size: 13px;
                 transition: all 0.15s;
             }
-            .sidebar a:hover,
-            .sidebar a.active {
+            .sidebar a:hover, .sidebar a.active {
                 background: rgba(34,197,94,0.15);
                 color: #22c55e;
             }
             .sidebar-bottom {
                 margin-top: auto;
                 padding: 8px;
-                border-top: 1px solid
-                    rgba(255,255,255,0.08);
+                border-top: 1px solid rgba(255,255,255,0.08);
             }
 
             .main-content {
@@ -167,7 +163,6 @@
                 gap: 10px;
                 margin-bottom: 18px;
                 flex-wrap: wrap;
-                align-items: center;
             }
             .filter-btn {
                 padding: 6px 16px;
@@ -223,11 +218,15 @@
             }
             .customer-name {
                 font-weight: 500;
+                color: #1a2332;
             }
-            .customer-address {
+            .customer-email {
                 font-size: 11px;
                 color: #94a3b8;
-                margin-top: 2px;
+            }
+            .order-amount {
+                font-weight: 600;
+                color: #1a2332;
             }
 
             .status-pill {
@@ -236,30 +235,21 @@
                 border-radius: 20px;
                 font-weight: 600;
             }
-            .s-pending    {
+            .s-shipped{
                 background: #fef3c7;
                 color: #92400e;
+            }
+            .s-delivered {
+                background: #d1fae5;
+                color: #065f46;
             }
             .s-processing {
                 background: #dbeafe;
                 color: #1e40af;
             }
-            .s-shipped    {
-                background: #fef3c7;
-                color: #92400e;
-            }
-            .s-delivered  {
-                background: #ede9fe;
-                color: #6d28d9;
-            }
-            .s-cancelled  {
+            .s-cancelled {
                 background: #fee2e2;
                 color: #991b1b;
-            }
-
-            .s-paid {
-                background: #d1fae5;
-                color: #065f46;
             }
 
             .btn-view {
@@ -269,10 +259,24 @@
                 border-radius: 6px;
                 padding: 5px 12px;
                 font-size: 12px;
+                font-weight: 500;
                 cursor: pointer;
             }
             .btn-view:hover {
                 background: #f1f5f9;
+            }
+
+            .status-select {
+                font-size: 12px;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                padding: 4px 8px;
+                color: #1a2332;
+                outline: none;
+                cursor: pointer;
+            }
+            .status-select:focus {
+                border-color: #22c55e;
             }
 
             .loading {
@@ -287,7 +291,32 @@
                 color: #94a3b8;
                 font-size: 13px;
             }
-
+            .status-pill {
+                font-size: 10px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-weight: 600;
+            }
+            .s-pending    {
+                background: #fef3c7;
+                color: #92400e;
+            }
+            .s-delivered  {
+                background: #ede9fe;
+                color: #6d28d9;
+            }
+            .s-processing {
+                background: #dbeafe;
+                color: #1e40af;
+            }
+            .s-cancelled  {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+            .s-paid {
+                background: #d1fae5;
+                color: #065f46;
+            }
             .modal-overlay {
                 display: none;
                 position: fixed;
@@ -308,7 +337,7 @@
                 border-radius: 14px;
                 padding: 28px;
                 width: 100%;
-                max-width: 480px;
+                max-width: 560px;
                 max-height: 85vh;
                 overflow-y: auto;
             }
@@ -316,19 +345,22 @@
                 font-size: 16px;
                 font-weight: 600;
                 color: #1a2332;
-                margin-bottom: 4px;
+                margin-bottom: 6px;
             }
             .modal-sub {
                 font-size: 12px;
                 color: #94a3b8;
-                margin-bottom: 16px;
+                margin-bottom: 20px;
+            }
+            .detail-section {
+                margin-bottom: 18px;
             }
             .detail-section-title {
                 font-size: 11px;
                 color: #94a3b8;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                margin: 16px 0 10px;
+                margin-bottom: 10px;
                 font-weight: 500;
             }
             .detail-row {
@@ -349,58 +381,29 @@
                 font-weight: 500;
                 text-align: right;
             }
-
-            .timeline {
-                position: relative;
-                padding-left: 24px;
-                margin-top: 8px;
-            }
-            .timeline::before {
-                content: "";
-                position: absolute;
-                left: 7px;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                background: #f1f5f9;
-            }
-            .timeline-item {
-                position: relative;
-                margin-bottom: 20px;
-            }
-            .timeline-dot {
-                position: absolute;
-                left: -21px;
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                border: 2px solid #e2e8f0;
-                background: #fff;
-                top: 2px;
-            }
-            .timeline-dot.done {
-                background: #22c55e;
-                border-color: #22c55e;
-            }
-            .timeline-dot.active {
-                background: #3b82f6;
-                border-color: #3b82f6;
-            }
-            .timeline-dot.cancelled-dot {
-                background: #ef4444;
-                border-color: #ef4444;
-            }
-            .timeline-label {
+            .item-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 0;
+                border-bottom: 1px solid #f8fafc;
                 font-size: 13px;
-                font-weight: 500;
+            }
+            .item-row:last-child {
+                border-bottom: none;
+            }
+            .item-name {
                 color: #1a2332;
+                font-weight: 500;
             }
-            .timeline-time {
-                font-size: 11px;
+            .item-qty {
                 color: #94a3b8;
-                margin-top: 2px;
+                font-size: 12px;
             }
-
+            .item-price {
+                color: #1a2332;
+                font-weight: 600;
+            }
             .modal-footer {
                 display: flex;
                 justify-content: flex-end;
@@ -421,151 +424,83 @@
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
-                <img src="images/logo.png" alt="GoMart"
-                     width="34" height="34"
-                     style="border-radius:8px;object-fit:cover;">
+                <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
                 <div>
                     <div class="logo-text">GoMart</div>
                     <div class="logo-sub">Admin Panel</div>
                 </div>
             </div>
+
             <div class="nav-section">Main</div>
-            <a href="dashboard.jsp">
-                <i class="fa-solid fa-gauge"></i>
-                Dashboard
-            </a>
+            <a href="dashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+
             <div class="nav-section">Catalog</div>
-            <a href="products.jsp">
-                <i class="fa-solid fa-box"></i> Products
-            </a>
-            <a href="categories.jsp">
-                <i class="fa-solid fa-layer-group"></i>
-                Categories
-            </a>
-            <a href="brand.jsp">
-                <i class="fa-solid fa-tags"></i> Brands
-            </a>
+            <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
+            <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
+            <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
+
             <div class="nav-section">Operations</div>
-            <a href="orders.jsp">
-                <i class="fa-solid fa-cart-shopping"></i>
-                Orders
-            </a>
-            <a href="inventory.jsp">
-                <i class="fa-solid fa-warehouse"></i>
-                Inventory
-            </a>
-            <a href="delivery.jsp" class="active">
-                <i class="fa-solid fa-truck"></i>
-                Delivery
-            </a>
-            <a href="promotions.jsp">
-                <i class="fa-solid fa-bullhorn"></i>
-                Notifications
-            </a>
+            <a href="orders.jsp" class="active"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
+            <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
+            <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
+
             <div class="nav-section">System</div>
-            <a href="customers.jsp">
-                <i class="fa-solid fa-users"></i>
-                Customers
-            </a>
-            <a href="messaging.jsp">
-                <i class="fa-solid fa-envelope"></i>
-                Messages
-            </a>
+            <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
+            <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
+
+            <!--  <a href="settings.jsp">&#9881; Settings</a>-->
+
             <div class="sidebar-bottom">
-                <a href="index.html" id="logoutBtn">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
+                <a href="index.html" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
 
             <div class="topbar">
                 <div>
-                    <p class="page-title">
-                        Delivery Tracking
-                    </p>
-                    <p class="page-sub">
-                        View and track order delivery status
-                    </p>
+                    <p class="page-title">Order Management</p>
+                    <p class="page-sub">View and manage customer orders</p>
                 </div>
                 <div class="admin-badge">
                     <div class="admin-avatar">AD</div>
-                    <span class="admin-name"
-                          id="adminEmail">Admin</span>
+                    <span class="admin-name" id="adminEmail">Admin</span>
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-val"
-                         id="totalDeliveries">--</div>
-                    <div class="stat-label">
-                        Total Orders
-                    </div>
+                    <div class="stat-val" id="totalOrders">--</div>
+                    <div class="stat-label">Total Orders</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val"
-                         id="pendingCount"
-                         style="color:#f59e0b">--</div>
+                    <div class="stat-val" id="pendingOrders" style="color:#f59e0b">--</div>
                     <div class="stat-label">Pending</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val"
-                         id="processingCount"
-                         style="color:#3b82f6">--</div>
-                    <div class="stat-label">
-                        Processing
-                    </div>
+                    <div class="stat-val" id="processingOrders" style="color:#3b82f6">--</div>
+                    <div class="stat-label">Processing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-val"
-                         id="deliveredCount"
-                         style="color:#22c55e">--</div>
-                    <div class="stat-label">
-                        Delivered
-                    </div>
+                    <div class="stat-val" id="deliveredOrders" style="color:#22c55e">--</div>
+                    <div class="stat-label">Delivered</div>
                 </div>
             </div>
 
             <div class="content-card">
-                <div class="card-title">
-                    All Deliveries
-                </div>
+                <div class="card-title">All Orders</div>
 
+                <!-- Filters -->
                 <div class="filter-row">
-                    <button class="filter-btn active"
-                            onclick="filterDeliveries('all', this)">
-                        All
-                    </button>
-
-                    <button class="filter-btn"
-                            onclick="filterDeliveries('processing', this)">
-                        Processing
-                    </button>
-                    <button class="filter-btn"
-                            onclick="filterDeliveries('shipped', this)">
-                        Shipped
-                    </button>
-                    <button class="filter-btn"
-                            onclick="filterDeliveries('delivered', this)">
-                        Delivered
-                    </button>
-                    <button class="filter-btn"
-                            onclick="filterDeliveries('cancelled', this)">
-                        Cancelled
-                    </button>
-                    <input type="text"
-                           class="search-input"
-                           id="searchInput"
-                           placeholder="Search customer..."
-                           oninput="searchDeliveries()">
+                    <button class="filter-btn active" onclick="filterOrders('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterOrders('processing', this)">Processing</button>
+                    <button class="filter-btn" onclick="filterOrders('shipped', this)">Shipped</button> 
+                    <button class="filter-btn" onclick="filterOrders('delivered', this)">Delivered</button>
+                    <button class="filter-btn" onclick="filterOrders('cancelled', this)">Cancelled</button>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by customer name..." oninput="searchOrders()">
                 </div>
 
                 <table class="table table-borderless mb-0">
@@ -573,87 +508,64 @@
                         <tr>
                             <th>Order ID</th>
                             <th>Customer</th>
-                            <th>Delivery Address</th>
+                            <th>Amount</th>
                             <th>Status</th>
+                            <th>Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="deliveryTable">
-                        <tr>
-                            <td colspan="5" class="loading">
-                                Loading deliveries...
-                            </td>
-                        </tr>
+                    <tbody id="ordersTable">
+                        <tr><td colspan="6" class="loading">Loading orders...</td></tr>
                     </tbody>
                 </table>
             </div>
+
         </div>
 
-        <div class="modal-overlay" id="deliveryModal">
+        <div class="modal-overlay" id="orderModal">
             <div class="modal-box">
-                <div class="modal-title"
-                     id="modalOrderId">
-                    Delivery Details
-                </div>
-                <div class="modal-sub"
-                     id="modalOrderDate"></div>
+                <div class="modal-title" id="modalOrderId">Order Details</div>
+                <div class="modal-sub" id="modalOrderDate"></div>
 
-                <div id="modalStatus"
-                     style="margin-bottom:16px"></div>
-
-                <div class="detail-section-title">
-                    Customer Info
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Name</span>
-                    <span class="detail-value"
-                          id="modalName">—</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">
-                        Contact
-                    </span>
-                    <span class="detail-value"
-                          id="modalContact">—</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Email</span>
-                    <span class="detail-value"
-                          id="modalEmail">—</span>
+                <div class="detail-section">
+                    <div class="detail-section-title">Customer Info</div>
+                    <div class="detail-row"><span class="detail-label">Name</span><span class="detail-value" id="modalCustomerName">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value" id="modalCustomerEmail">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Contact</span><span class="detail-value" id="modalCustomerContact">—</span></div>
                 </div>
 
-                <div class="detail-section-title">
-                    Delivery Address
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">
-                        Address
-                    </span>
-                    <span class="detail-value"
-                          id="modalAddress">—</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Label</span>
-                    <span class="detail-value"
-                          id="modalAddressName">—</span>
+                <div class="detail-section">
+                    <div class="detail-section-title">Shipping Address</div>
+                    <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value" id="modalAddress">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Label</span><span class="detail-value" id="modalAddressName">—</span></div>
                 </div>
 
-                <div class="detail-section-title">
-                    Delivery Timeline
+                <div class="detail-section">
+                    <div class="detail-section-title">Order Items</div>
+                    <div id="modalItems"></div>
                 </div>
-                <div class="timeline"
-                     id="modalTimeline"></div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">Summary</div>
+                    <div class="detail-row"><span class="detail-label">Total Amount</span><span class="detail-value" id="modalTotal">—</span></div>
+                    <div class="detail-row">
+                        <span class="detail-label">Update Status</span>
+                        <select class="status-select" id="modalStatusSelect" onchange="updateOrderStatus()">
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>      
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="modal-footer">
-                    <button class="btn-close-modal"
-                            onclick="closeDeliveryModal()">
-                        Close
-                    </button>
+                    <button class="btn-close-modal" onclick="closeOrderModal()">Close</button>
                 </div>
             </div>
         </div>
 
-        <script type="module"
-        src="js/delivery.js"></script>
+        <script type="module" src="js/orders.js"></script>
+
     </body>
 </html>
