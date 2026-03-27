@@ -49,24 +49,34 @@ try {
     }
 }
 
+
 function updateStats() {
-    document.getElementById("totalOrders").textContent = allOrders.length;
-    document.getElementById("pendingOrders").textContent =
-            allOrders.filter(o => (o.status || "").toLowerCase() === "pending").length;
-    document.getElementById("processingOrders").textContent =
-            allOrders.filter(o => (o.status || "").toLowerCase() === "processing").length;
-    document.getElementById("deliveredOrders").textContent =
-            allOrders.filter(o =>
-                ["delivered", "paid"].includes((o.status || "").toLowerCase())
-            ).length;
+    document.getElementById("totalOrders")
+            .textContent = allOrders.length;
+
+    document.getElementById("processingOrders")
+            .textContent = allOrders.filter(o =>
+                (o.status || "").toLowerCase()
+                === "processing").length;
+
+    document.getElementById("shippedOrders")
+            .textContent = allOrders.filter(o =>
+                (o.status || "").toLowerCase()
+                === "shipped").length;
+
+   
+    document.getElementById("deliveredOrders")
+             .textContent = allOrders.filter(o =>
+                (o.status || "").toLowerCase()
+                === "delivered").length;
+
+    document.getElementById("cancelledOrders")
+            .textContent = allOrders.filter(o =>
+                (o.status || "").toLowerCase()
+                === "cancelled").length;
 }
 
-/**
- * Returns the address to display in the table/modal.
- * Logic mirrors the mobile app:
- *   - If billingAddress exists and has a non-empty address → use billingAddress
- *   - Otherwise → use shippingAddress
- */
+
 function resolveDisplayAddress(order) {
     const hasBilling =
         order.billingAddress &&
@@ -97,7 +107,6 @@ function renderTable(orders) {
             "paid": "s-paid"
         }[statusLower] || "s-pending";
 
-        // Always show sender (payer) name/email from shippingAddress
         const customerName  = d.shippingAddress?.name  || "-";
         const customerEmail = d.shippingAddress?.email || "-";
 

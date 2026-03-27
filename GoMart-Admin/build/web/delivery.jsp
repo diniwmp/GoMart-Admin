@@ -127,7 +127,7 @@
 
             .stats-row {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 14px;
                 margin-bottom: 24px;
             }
@@ -500,7 +500,7 @@
                 </div>
             </div>
 
-            <div class="stats-row">
+          <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-val"
                          id="totalDeliveries">--</div>
@@ -510,25 +510,27 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-val"
-                         id="pendingCount"
-                         style="color:#f59e0b">--</div>
-                    <div class="stat-label">Pending</div>
+                         id="processingCount"
+                         style="color:#3b82f6">--</div>
+                    <div class="stat-label">Processing</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-val"
-                         id="processingCount"
-                         style="color:#3b82f6">--</div>
-                    <div class="stat-label">
-                        Processing
-                    </div>
+                         id="shippedCount"
+                         style="color:#6d28d9">--</div>
+                    <div class="stat-label">Shipped</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-val"
                          id="deliveredCount"
                          style="color:#22c55e">--</div>
-                    <div class="stat-label">
-                        Delivered
-                    </div>
+                    <div class="stat-label">Delivered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val"
+                         id="cancelledCount"
+                         style="color:#ef4444">--</div>
+                    <div class="stat-label">Cancelled</div>
                 </div>
             </div>
 
