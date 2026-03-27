@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>GoMart Admin - Promotions</title>
-        <link rel="icon" type="image/png" href="images/logo.png" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+        <title>GoMart Admin - Categories</title>
+        <link rel="icon" type="image/png" href="images/logo.png"" />
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.css">
+
 
         <style>
             * {
@@ -122,29 +123,6 @@
                 color: #1a2332;
             }
 
-            .stats-row {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 14px;
-                margin-bottom: 24px;
-            }
-            .stat-card {
-                background: #fff;
-                border-radius: 14px;
-                border: 1px solid #e2e8f0;
-                padding: 16px 20px;
-            }
-            .stat-val {
-                font-size: 24px;
-                font-weight: 700;
-                color: #1a2332;
-            }
-            .stat-label {
-                font-size: 12px;
-                color: #64748b;
-                margin-top: 3px;
-            }
-
             .content-card {
                 background: #fff;
                 border-radius: 14px;
@@ -163,126 +141,58 @@
                 font-size: 12px;
                 color: #64748b;
                 margin-bottom: 5px;
-                display: block;
             }
-            .form-control, .form-select {
+            .form-control {
                 font-size: 13px;
                 border: 1px solid #e2e8f0;
                 border-radius: 8px;
                 padding: 9px 12px;
-                width: 100%;
-                outline: none;
             }
-            .form-control:focus, .form-select:focus {
+            .form-control:focus {
                 border-color: #22c55e;
                 box-shadow: 0 0 0 3px #22c55e20;
-            }
-            textarea.form-control {
-                resize: vertical;
-                min-height: 90px;
+                outline: none;
             }
 
-            .promo-preview {
-                background: #f8fafc;
-                border: 1px solid #e2e8f0;
-                border-radius: 12px;
-                padding: 16px;
-                margin-top: 16px;
-                display: none;
-            }
-            .promo-preview-title {
-                font-size: 11px;
-                color: #94a3b8;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                margin-bottom: 10px;
-            }
-            .notif-card {
-                background: #fff;
-                border-radius: 10px;
-                border: 1px solid #e2e8f0;
-                padding: 14px;
-                display: flex;
-                gap: 12px;
-                align-items: flex-start;
-            }
-            .notif-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
-                background: #22c55e20;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 16px;
-                flex-shrink: 0;
-            }
-            .notif-title {
-                font-size: 13px;
-                font-weight: 600;
-                color: #1a2332;
-            }
-            .notif-message {
-                font-size: 12px;
-                color: #64748b;
-                margin-top: 2px;
-            }
-            .notif-time {
-                font-size: 10px;
-                color: #94a3b8;
-                margin-top: 4px;
-            }
-
-            .type-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-                margin-bottom: 4px;
-            }
-            .type-card {
-                border: 1px solid #e2e8f0;
-                border-radius: 10px;
-                padding: 12px;
-                cursor: pointer;
-                text-align: center;
-                transition: all 0.15s;
-            }
-            .type-card:hover {
-                border-color: #22c55e;
-            }
-            .type-card.selected {
-                border-color: #22c55e;
-                background: #f0fdf4;
-            }
-            .type-card input {
-                display: none;
-            }
-            .type-icon {
-                font-size: 20px;
-                margin-bottom: 4px;
-            }
-            .type-label {
-                font-size: 12px;
-                font-weight: 500;
-                color: #475569;
-            }
-
-            .btn-send {
+            .btn-add {
                 background: #22c55e;
                 color: #fff;
                 border: none;
                 border-radius: 8px;
-                padding: 10px 28px;
+                padding: 9px 20px;
                 font-size: 13px;
                 font-weight: 500;
                 cursor: pointer;
+                width: 100%;
             }
-            .btn-send:hover {
+            .btn-add:hover {
                 background: #16a34a;
             }
-            .btn-send:disabled {
+            .btn-add:disabled {
                 background: #86efac;
                 cursor: not-allowed;
+            }
+
+            .progress-bar-wrap {
+                display: none;
+                margin-top: 10px;
+            }
+            .progress-bar-bg {
+                background: #f1f5f9;
+                border-radius: 4px;
+                height: 6px;
+            }
+            .progress-bar-fill {
+                background: #22c55e;
+                height: 6px;
+                border-radius: 4px;
+                width: 0%;
+                transition: width 0.3s;
+            }
+            .progress-label {
+                font-size: 11px;
+                color: #64748b;
+                margin-top: 4px;
             }
 
             .alert-msg {
@@ -315,28 +225,33 @@
                 color: #1a2332;
                 vertical-align: middle;
                 border-bottom: 1px solid #f8fafc;
-                padding: 12px;
+                padding: 10px 12px;
+            }
+            .category-img {
+                width: 52px;
+                height: 52px;
+                object-fit: cover;
+                border-radius: 10px;
+                border: 1px solid #e2e8f0;
+            }
+            .category-name {
+                font-weight: 500;
+                color: #1a2332;
             }
 
-            .type-badge {
-                font-size: 10px;
-                padding: 3px 10px;
-                border-radius: 20px;
-                font-weight: 600;
-            }
-            .t-promo {
-                background: #fef3c7;
-                color: #92400e;
-            }
-            .t-system {
-                background: #dbeafe;
+            .btn-edit {
+                background: #eff6ff;
                 color: #1e40af;
+                border: 1px solid #bfdbfe;
+                border-radius: 6px;
+                padding: 5px 12px;
+                font-size: 12px;
+                font-weight: 500;
+                cursor: pointer;
             }
-            .t-sale {
-                background: #fce7f3;
-                color: #9d174d;
+            .btn-edit:hover {
+                background: #dbeafe;
             }
-
             .btn-delete {
                 background: #fff1f2;
                 color: #991b1b;
@@ -346,6 +261,7 @@
                 font-size: 12px;
                 font-weight: 500;
                 cursor: pointer;
+                margin-left: 6px;
             }
             .btn-delete:hover {
                 background: #fee2e2;
@@ -363,11 +279,68 @@
                 color: #94a3b8;
                 font-size: 13px;
             }
+
+            .modal-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.4);
+                z-index: 999;
+                align-items: center;
+                justify-content: center;
+            }
+            .modal-overlay.show {
+                display: flex;
+            }
+            .modal-box {
+                background: #fff;
+                border-radius: 14px;
+                padding: 28px;
+                width: 100%;
+                max-width: 400px;
+            }
+            .modal-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #1a2332;
+                margin-bottom: 18px;
+            }
+            .modal-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            .btn-cancel {
+                flex: 1;
+                background: #f1f5f9;
+                color: #475569;
+                border: none;
+                border-radius: 8px;
+                padding: 9px;
+                font-size: 13px;
+                cursor: pointer;
+            }
+            .btn-save {
+                flex: 1;
+                background: #22c55e;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 9px;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+            .btn-save:hover {
+                background: #16a34a;
+            }
         </style>
     </head>
     <body>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-logo">
                 <img src="images/logo.png" alt="GoMart" width="34" height="34" style="border-radius:8px;object-fit:cover;">
@@ -376,19 +349,20 @@
                     <div class="logo-sub">Admin Panel</div>
                 </div>
             </div>
+
             <div class="nav-section">Main</div>
             <a href="dashboard.jsp"><i class="fa-solid fa-gauge"></i> Dashboard</a>
 
             <div class="nav-section">Catalog</div>
-            <a href="products.jsp" ><i class="fa-solid fa-box"></i> Products</a>
-            <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
+            <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
+            <a href="categories.jsp" class="active"><i class="fa-solid fa-layer-group"></i> Categories</a>
             <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
 
             <div class="nav-section">Operations</div>
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
             <a href="inventory.jsp"><i class="fa-solid fa-warehouse"></i> Inventory</a>
             <a href="delivery.jsp"><i class="fa-solid fa-truck"></i> Delivery</a>
-            <a href="promotions.jsp" class="active"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
+            <a href="promotions.jsp"><i class="fa-solid fa-bullhorn"></i> Notifications</a>
 
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
@@ -405,8 +379,8 @@
 
             <div class="topbar">
                 <div>
-                    <p class="page-title">Notifications</p>
-                    <p class="page-sub">Send notifications to all customers</p>
+                    <p class="page-title">Category Management</p>
+                    <p class="page-sub">Add and manage product categories</p>
                 </div>
                 <div class="admin-badge">
                     <div class="admin-avatar">AD</div>
@@ -414,105 +388,72 @@
                 </div>
             </div>
 
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-val" id="totalSent">--</div>
-                    <div class="stat-label">Total Sent</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val" id="promoCount" style="color:#f59e0b">--</div>
-                    <div class="stat-label">Promotions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val" id="systemCount" style="color:#3b82f6">--</div>
-                    <div class="stat-label">System Messages</div>
-                </div>
-            </div>
-
-            <!-- Send Form -->
             <div class="content-card">
-                <div class="card-title">Send New Notification</div>
-
-                <div class="mb-3">
-                    <label class="form-label">Notification Type</label>
-                    <div class="type-grid">
-                        <label class="type-card selected" onclick="selectType(this, 'PROMO')">
-                            <input type="radio" name="notifType" value="PROMO" checked>
-                            <div class="type-icon"><i class="bi bi-tag-fill" style="font-size:20px;color:#f59e0b"></i></div>
-                            <div class="type-label">Promotion</div>
-                        </label>
-                        <label class="type-card" onclick="selectType(this, 'SALE')">
-                            <input type="radio" name="notifType" value="SALE">
-                            <div class="type-icon"><i class="bi bi-percent" style="font-size:20px;color:#22c55e"></i></div>
-                            <div class="type-label">Sale</div>
-                        </label>
-                        <label class="type-card" onclick="selectType(this, 'SYSTEM')">
-                            <input type="radio" name="notifType" value="SYSTEM">
-                            <div class="type-icon"><i class="bi bi-megaphone-fill" style="font-size:20px;color:#3b82f6"></i></div>
-                            <div class="type-label">System</div>
-                        </label>
-                    </div>
-                </div>
-
+                <div class="card-title">Add New Category</div>
                 <div class="row g-3">
-                    <div class="col-md-12">
-                        <label class="form-label">Notification Title</label>
-                        <input type="text" class="form-control" id="notifTitle"
-                               placeholder="e.g. Special Weekend Offer!"
-                               oninput="updatePreview()">
+                    <div class="col-md-4">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" placeholder="e.g. Beverages">
                     </div>
-                    <div class="col-md-12">
-                        <label class="form-label">Message</label>
-                        <textarea class="form-control" id="notifMessage"
-                                  placeholder="e.g. Get 20% off on all products this weekend only. Shop now!"
-                                  oninput="updatePreview()"></textarea>
+                    <div class="col-md-4">
+                        <label class="form-label">Category Image</label>
+                        <input type="file" class="form-control" id="categoryImage" accept="image/*">
                     </div>
-                </div>
-
-                <div class="promo-preview" id="promoPreview">
-                    <div class="promo-preview-title">Preview — how it looks on mobile</div>
-                    <div class="notif-card">
-                        <div class="notif-icon"><i class="bi bi-bell-fill" style="font-size:20px;color:#f59e0b"></i></div>
-                        <div>
-                            <div class="notif-title" id="previewTitle">Title here</div>
-                            <div class="notif-message" id="previewMessage">Message here</div>
-                            <div class="notif-time">Just now</div>
-                        </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button class="btn-add" id="addBtn" onclick="addCategory()">+ Add Category</button>
                     </div>
                 </div>
-
+                <div class="progress-bar-wrap" id="progressWrap">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                    <div class="progress-label" id="progressLabel">Uploading image...</div>
+                </div>
                 <div class="alert-msg" id="alertMsg"></div>
-
-                <div class="mt-4">
-                    <button class="btn-send" id="sendBtn" onclick="sendNotification()">
-                        &#9993; Send to All Customers
-                    </button>
-                </div>
             </div>
 
             <div class="content-card">
-                <div class="card-title">Sent Notifications
-                    <span id="notifCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span>
+                <div class="card-title">
+                    All Categories
+                    <span id="categoryCount" style="font-size:12px;color:#94a3b8;font-weight:400"></span>
                 </div>
                 <table class="table table-borderless mb-0">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Message</th>
-                            <th>Type</th>
-                            <th>Sent At</th>
-                            <th>Action</th>
+                            <th>Image</th>
+                            <th>Category Name</th>
+                            <th>Category ID</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="notifTable">
-                        <tr><td colspan="5" class="loading">Loading notifications...</td></tr>
+                    <tbody id="categoryTable">
+                        <tr><td colspan="4" class="loading">Loading categories...</td></tr>
                     </tbody>
                 </table>
             </div>
 
         </div>
 
-        <script type="module" src="js/promotions.js"></script>
+        <div class="modal-overlay" id="editModal">
+            <div class="modal-box">
+                <div class="modal-title">Edit Category</div>
+                <input type="hidden" id="editCategoryId">
+                <div class="mb-3">
+                    <label class="form-label">Category Name</label>
+                    <input type="text" class="form-control" id="editCategoryName" placeholder="Category name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Update Image (optional)</label>
+                    <input type="file" class="form-control" id="editCategoryImage" accept="image/*">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="js/category.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.js"></script>
 
     </body>
