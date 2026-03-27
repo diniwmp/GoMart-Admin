@@ -452,7 +452,7 @@
             <div class="nav-section">Catalog</div>
             <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
             <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
+            <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
 
             <div class="nav-section">Operations</div>
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
@@ -462,7 +462,7 @@
 
             <div class="nav-section">System</div>
             <a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a>
-            <a href="messaging.jsp"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="messaging.jsp" class="active"><i class="fa-solid fa-envelope"></i> Messages</a>
 
             <!--  <a href="settings.jsp">&#9881; Settings</a>-->
 

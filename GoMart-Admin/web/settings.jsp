@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>GoMart Admin - Settings</title>
-                <link rel="icon" type="image/png" href="images/logo.png" />
+        <link rel="icon" type="image/png" href="images/logo.png" />
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -369,7 +369,7 @@
             <div class="nav-section">Catalog</div>
             <a href="products.jsp"><i class="fa-solid fa-box"></i> Products</a>
             <a href="categories.jsp"><i class="fa-solid fa-layer-group"></i> Categories</a>
-            <a href="brand.jsp" class="active"><i class="fa-solid fa-tags"></i> Brands</a>
+            <a href="brand.jsp"><i class="fa-solid fa-tags"></i> Brands</a>
 
             <div class="nav-section">Operations</div>
             <a href="orders.jsp"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
