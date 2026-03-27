@@ -9,7 +9,6 @@ const db = getFirestore(app);
 
 let allOrders = [];
 
-// Auth State Observer
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -19,14 +18,12 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// Logout Handler
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
   await signOut(auth);
   window.location.href = "index.html";
 });
 
-// Load Data from Firestore
 async function loadDeliveries() {
   const table = document.getElementById("deliveryTable");
   table.innerHTML = `<tr><td colspan="5" class="loading">Loading deliveries...</td></tr>`;
@@ -68,7 +65,6 @@ function getStatusClass(status) {
   return classes[status] || "s-pending";
 }
 
-// Optimized Table Rendering
 function renderTable(orders) {
   const table = document.getElementById("deliveryTable");
   if (orders.length === 0) {
@@ -93,7 +89,6 @@ function renderTable(orders) {
   }).join('');
 }
 
-// Global Window Functions for HTML calls
 window.filterDeliveries = function (status, btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
@@ -118,7 +113,6 @@ window.openDeliveryModal = function (id) {
   const status = (order.status || "pending").toLowerCase();
   document.getElementById("modalStatus").innerHTML = `<span class="status-pill ${getStatusClass(status)}">${status.toUpperCase()}</span>`;
 
-  // Info mapping
   document.getElementById("modalName").textContent = order.shippingAddress?.name || "—";
   document.getElementById("modalContact").textContent = order.shippingAddress?.contact || "—";
   document.getElementById("modalEmail").textContent = order.shippingAddress?.email || "—";
@@ -131,7 +125,6 @@ window.openDeliveryModal = function (id) {
     ? (order.billingAddress.name ? `Recipient: ${order.billingAddress.name}` : "Recipient Address")
     : (order.shippingAddress?.addressName || "—");
 
-  // Timeline Logic
   const STEPS = [
     { key: "pending", label: "Order Placed" },
     { key: "processing", label: "Processing" },

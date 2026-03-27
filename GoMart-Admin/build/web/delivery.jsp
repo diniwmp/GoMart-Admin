@@ -237,8 +237,8 @@
                 font-weight: 600;
             }
             .s-pending    {
-                background: #fef3c7;
-                color: #92400e;
+               background: #d1fae5;
+                color: #065f46;
             }
             .s-processing {
                 background: #dbeafe;
@@ -482,7 +482,6 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
 
             <div class="topbar">
@@ -501,7 +500,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-val"
