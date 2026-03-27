@@ -302,14 +302,20 @@ async function sendFcmNotification(userId, status, orderId) {
         const title   = getStatusTitle(status);
         const message = getStatusMessage(status, shortId);
 
-        const response = await fetch(
-                "http://localhost:8080/GoMart-Admin/api/notifications/send",
-                {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({ token: fcmToken, title, message, orderId, type: "ORDER" })
-                }
-        );
+      const response = await fetch(
+      "http://localhost:8080/GoMart-Admin/api/notifications/send",
+      {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token:   fcmToken,
+          title:   title,
+          message: message,
+          orderId: orderId,
+          type:    "ORDER"
+        })
+      }
+    );
 
         if (response.ok) { console.log("FCM sent to:", userId); }
         else             { console.warn("FCM failed:", response.status); }
