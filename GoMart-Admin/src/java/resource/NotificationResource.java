@@ -25,7 +25,7 @@ public class NotificationResource {
             Logger.getLogger(
                     NotificationResource.class.getName());
 
-    private static final String PROJECT_ID = "gomart-e6709";
+    private static final String PROJECT_ID = "project id";
 
     private static final String FCM_URL =
             "https://fcm.googleapis.com/v1/projects/"
